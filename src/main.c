@@ -8,7 +8,7 @@
 
 struct Node_t* new_node  (char* data);
 
-int print_tree_preorder  (struct Node_t* root);
+int print_tree_preorder  (struct Node_t* root, FILE* filename, int level);
 
 int print_tree_postorder (struct Node_t* root);
 
@@ -32,12 +32,16 @@ void clean_buffer(void);
 
 char* get_and_prepare_string (const char* question);
 
+int write_database (struct Node_t* root, FILE* filename);
+
 int write_log_file (struct Node_t* root, const char* reason_bro/* in c++ " = doesn't_care_bro"*/);
 
 FILE* LOG_FILE = NULL;
 
 int main (void)
 {
+    FILE* database = fopen ("database.txt", "w");
+
     printf ("GNU = %d.%d\n", __GNUC__, __GNUC_MINOR__);
 
     printf ("%ld", _POSIX_C_SOURCE);
@@ -71,10 +75,11 @@ int main (void)
     node_teaches_physics->left        = node_ovchos;
     node_teaches_physics->right       = node_chubarov;
 
+
     write_log_file (root, "before insert");
 
     printf ("\npreorder: ");
-    print_tree_preorder  (root);
+    print_tree_preorder  (root, stdout, 0);
 
     printf ("\npostorder: ");
     print_tree_postorder (root);
@@ -83,19 +88,39 @@ int main (void)
     print_tree_inorder   (root);
     printf ("\n");
 
-    while (true)
+    int loop = 1;
+    while (loop)
     {
-        akinator_game (root);
-
-        printf ("do you wanna play again?");
-        printf ("[y/n]\n");
-
-        int answer_for_restart = getchar();
+        printf ("what do you wanna doing?\n[a]kinator game, [w]rite to database, [q]uit\n");
+        int answer_for_mode = getchar();
         clean_buffer ();
 
-        if      (answer_for_restart == 'y') ;
-        else if (answer_for_restart == 'n') break;
-        else printf ("why you write this, bye bye...\n");
+        switch (answer_for_mode)
+        {
+            case 'a':
+            {
+                akinator_game (root);
+                break;
+            }
+
+            case 'w':
+            {
+                write_database (root, database);
+                break;
+            }
+
+            case 'q':
+            {
+                loop = 0;
+                break;
+            }
+
+            default:
+            {
+                printf ("bro....");
+                break;
+            }
+        }
     }
 
     write_log_file (root, "after insert");
@@ -198,7 +223,7 @@ struct Node_t* akinator_game (struct Node_t* node)
     {
         printf ("lol, it was so easy...\n");
         return node;
-    }       //TODO - buffer clean, loop (restart akinator_game)
+    }
 
     add_info (node);
 
@@ -241,20 +266,32 @@ int delete_sub_tree (struct Node_t* node)
     return 0;
 }
 
-int print_tree_preorder (struct Node_t* root)
+int write_database (struct Node_t* root, FILE* filename)
+{
+    assert (filename); //FIXME
+
+    print_tree_preorder (root, filename, 0);
+
+    return 0;
+}
+
+int print_tree_preorder (struct Node_t* root, FILE* filename, int level)
 {
     if (!root)
         return 1; //FIXME
 
-    printf ("( ");
+    fprintf (filename, "%*s{ ", level * 4, "");
 
-    printf ("\"%s\" ",  root->data);
+    fprintf (filename, "\"%s\" ",  root->data);
 
-    if (root->left)  print_tree_preorder (root->left);
+    if (root->left)
+        fprintf (filename, "\n");
 
-    if (root->right) print_tree_preorder (root->right);
+    if (root->left)  print_tree_preorder (root->left,  filename, level + 1);
 
-    printf (") ");
+    if (root->right) print_tree_preorder (root->right, filename, level + 1);
+
+    fprintf (filename, "%*s} \n", (root->left) ? level * 4 : 0, "");
 
     return 0;
 }
@@ -264,7 +301,7 @@ int print_tree_postorder (struct Node_t* root)
     if (!root)
         return 1; //FIXME
 
-    printf ("( ");
+    printf ("{ ");
 
     if (root->left)  print_tree_postorder (root->left);
 
@@ -272,7 +309,7 @@ int print_tree_postorder (struct Node_t* root)
 
     printf ("\"%s\" ",  root->data);
 
-    printf (") ");
+    printf ("} ");
 
     return 0;
 }
@@ -282,7 +319,7 @@ int print_tree_inorder (struct Node_t* root)
     if (!root)
         return 1; //FIXME
 
-    printf ("( ");
+    printf ("{ ");
 
     if (root->left)  print_tree_inorder (root->left);
 
@@ -290,7 +327,7 @@ int print_tree_inorder (struct Node_t* root)
 
     if (root->right) print_tree_inorder (root->right);
 
-    printf (") ");
+    printf ("} ");
 
     return 0;
 }

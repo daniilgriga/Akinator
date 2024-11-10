@@ -8,13 +8,13 @@
  viewBox="0.00 0.00 452.00 184.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 180)">
 <title>%3</title>
-<!-- node0x503000000160 -->
+<!-- node0x503000000070 -->
 <g id="node1" class="node">
-<title>node0x503000000160</title>
+<title>node0x503000000070</title>
 <path fill="#ffffd0" stroke="black" d="M33,-106.5C33,-106.5 410,-106.5 410,-106.5 416,-106.5 422,-112.5 422,-118.5 422,-118.5 422,-163.5 422,-163.5 422,-169.5 416,-175.5 410,-175.5 410,-175.5 33,-175.5 33,-175.5 27,-175.5 21,-169.5 21,-163.5 21,-163.5 21,-118.5 21,-118.5 21,-112.5 27,-106.5 33,-106.5"/>
-<text text-anchor="middle" x="221.5" y="-160.3" font-family="Times,serif" font-size="14.00">[0x503000000160]</text>
+<text text-anchor="middle" x="221.5" y="-160.3" font-family="Times,serif" font-size="14.00">[0x503000000070]</text>
 <polyline fill="none" stroke="black" points="21,-152.5 422,-152.5 "/>
-<text text-anchor="middle" x="221.5" y="-137.3" font-family="Times,serif" font-size="14.00">data = teaches in online&#45;school</text>
+<text text-anchor="middle" x="221.5" y="-137.3" font-family="Times,serif" font-size="14.00">data = lohhhhh</text>
 <polyline fill="none" stroke="black" points="21,-129.5 422,-129.5 "/>
 <text text-anchor="middle" x="119" y="-114.3" font-family="Times,serif" font-size="14.00">left = [0x5030000001c0]</text>
 <polyline fill="none" stroke="black" points="217,-106.5 217,-129.5 "/>
@@ -26,15 +26,15 @@
 <path fill="#ffffd0" stroke="black" d="M12,-0.5C12,-0.5 201,-0.5 201,-0.5 207,-0.5 213,-6.5 213,-12.5 213,-12.5 213,-57.5 213,-57.5 213,-63.5 207,-69.5 201,-69.5 201,-69.5 12,-69.5 12,-69.5 6,-69.5 0,-63.5 0,-57.5 0,-57.5 0,-12.5 0,-12.5 0,-6.5 6,-0.5 12,-0.5"/>
 <text text-anchor="middle" x="106.5" y="-54.3" font-family="Times,serif" font-size="14.00">[0x5030000001c0]</text>
 <polyline fill="none" stroke="black" points="0,-46.5 213,-46.5 "/>
-<text text-anchor="middle" x="106.5" y="-31.3" font-family="Times,serif" font-size="14.00">data = penkin</text>
+<text text-anchor="middle" x="106.5" y="-31.3" font-family="Times,serif" font-size="14.00">data = ded</text>
 <polyline fill="none" stroke="black" points="0,-23.5 213,-23.5 "/>
 <text text-anchor="middle" x="50.5" y="-8.3" font-family="Times,serif" font-size="14.00">left = [(nil)]</text>
 <polyline fill="none" stroke="black" points="101,-0.5 101,-23.5 "/>
 <text text-anchor="middle" x="157" y="-8.3" font-family="Times,serif" font-size="14.00">right = [(nil)]</text>
 </g>
-<!-- node0x503000000160&#45;&gt;node0x5030000001c0 -->
+<!-- node0x503000000070&#45;&gt;node0x5030000001c0 -->
 <g id="edge1" class="edge">
-<title>node0x503000000160&#45;&gt;node0x5030000001c0</title>
+<title>node0x503000000070&#45;&gt;node0x5030000001c0</title>
 <path fill="none" stroke="black" d="M184.16,-106.23C173.61,-96.69 162.02,-86.21 151.09,-76.33"/>
 <polygon fill="black" stroke="black" points="153.41,-73.71 143.65,-69.6 148.72,-78.9 153.41,-73.71"/>
 </g>
@@ -44,15 +44,15 @@
 <path fill="#ffffd0" stroke="black" d="M243,-0.5C243,-0.5 432,-0.5 432,-0.5 438,-0.5 444,-6.5 444,-12.5 444,-12.5 444,-57.5 444,-57.5 444,-63.5 438,-69.5 432,-69.5 432,-69.5 243,-69.5 243,-69.5 237,-69.5 231,-63.5 231,-57.5 231,-57.5 231,-12.5 231,-12.5 231,-6.5 237,-0.5 243,-0.5"/>
 <text text-anchor="middle" x="337.5" y="-54.3" font-family="Times,serif" font-size="14.00">[0x5030000001f0]</text>
 <polyline fill="none" stroke="black" points="231,-46.5 444,-46.5 "/>
-<text text-anchor="middle" x="337.5" y="-31.3" font-family="Times,serif" font-size="14.00">data = ovchos</text>
+<text text-anchor="middle" x="337.5" y="-31.3" font-family="Times,serif" font-size="14.00">data = poltorashka</text>
 <polyline fill="none" stroke="black" points="231,-23.5 444,-23.5 "/>
 <text text-anchor="middle" x="281.5" y="-8.3" font-family="Times,serif" font-size="14.00">left = [(nil)]</text>
 <polyline fill="none" stroke="black" points="332,-0.5 332,-23.5 "/>
 <text text-anchor="middle" x="388" y="-8.3" font-family="Times,serif" font-size="14.00">right = [(nil)]</text>
 </g>
-<!-- node0x503000000160&#45;&gt;node0x5030000001f0 -->
+<!-- node0x503000000070&#45;&gt;node0x5030000001f0 -->
 <g id="edge2" class="edge">
-<title>node0x503000000160&#45;&gt;node0x5030000001f0</title>
+<title>node0x503000000070&#45;&gt;node0x5030000001f0</title>
 <path fill="none" stroke="black" d="M259.16,-106.23C269.8,-96.69 281.49,-86.21 292.52,-76.33"/>
 <polygon fill="black" stroke="black" points="294.92,-78.88 300.03,-69.6 290.24,-73.67 294.92,-78.88"/>
 </g>

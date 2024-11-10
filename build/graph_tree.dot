@@ -4,7 +4,11 @@ bgcolor="transparent"
 node0x503000000040 [shape=Mrecord; label = " { [0x503000000040] | data = animal | { left = [0x503000000070] | right = [0x5030000000d0] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x503000000040 -> node0x503000000070
 ;node0x503000000040 -> node0x5030000000d0
-;node0x503000000070 [shape=Mrecord; label = " { [0x503000000070] | data = poltorashka | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+;node0x503000000070 [shape=Mrecord; label = " { [0x503000000070] | data = lohhhhh | { left = [0x5030000001c0] | right = [0x5030000001f0] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x503000000070 -> node0x5030000001c0
+;node0x503000000070 -> node0x5030000001f0
+;node0x5030000001c0 [shape=Mrecord; label = " { [0x5030000001c0] | data = ded | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x5030000001f0 [shape=Mrecord; label = " { [0x5030000001f0] | data = poltorashka | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x5030000000d0 [shape=Mrecord; label = " { [0x5030000000d0] | data = teaches discrete math | { left = [0x503000000100] | right = [0x503000000130] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x5030000000d0 -> node0x503000000100
 ;node0x5030000000d0 -> node0x503000000130
@@ -12,11 +16,7 @@ node0x5030000000d0 -> node0x503000000100
 node0x503000000130 [shape=Mrecord; label = " { [0x503000000130] | data = teaches physics | { left = [0x503000000160] | right = [0x503000000190] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x503000000130 -> node0x503000000160
 ;node0x503000000130 -> node0x503000000190
-;node0x503000000160 [shape=Mrecord; label = " { [0x503000000160] | data = teaches in online-school | { left = [0x5030000001c0] | right = [0x5030000001f0] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000160 -> node0x5030000001c0
-;node0x503000000160 -> node0x5030000001f0
-;node0x5030000001c0 [shape=Mrecord; label = " { [0x5030000001c0] | data = penkin | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5030000001f0 [shape=Mrecord; label = " { [0x5030000001f0] | data = ovchos | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+;node0x503000000160 [shape=Mrecord; label = " { [0x503000000160] | data = ovchos | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x503000000190 [shape=Mrecord; label = " { [0x503000000190] | data = chubarov | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
 
 }
