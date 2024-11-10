@@ -2,10 +2,11 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 #include "head.h"
 
-struct Node_t* new_node  (int data);
+struct Node_t* new_node  (char* data);
 
 int print_tree_preorder  (struct Node_t* root);
 
@@ -17,35 +18,58 @@ int delete_sub_tree (struct Node_t* node);
 
 void print_tree_preorder_for_file (struct Node_t* root, FILE* filename);
 
-const char* graph_dump (struct Node_t* root);
+char* graph_dump (struct Node_t* root);
 
 FILE* open_log_file (const char* filename);
 
-struct Node_t* insert_node (struct Node_t* node, int data);
+struct Node_t* akinator_game (struct Node_t* node);
 
-struct Node_t* iterativly_insert (struct Node_t* node, int data);
+struct Node_t* iterativly_insert (struct Node_t* node, char* data);
+
+struct Node_t* add_info (struct Node_t* node);
+
+void clean_buffer(void);
+
+char* get_and_prepare_string (const char* question);
 
 int write_log_file (struct Node_t* root, const char* reason_bro/* in c++ " = doesn't_care_bro"*/);
 
 FILE* LOG_FILE = NULL;
 
-
 int main (void)
 {
-   open_log_file ("../build/dump.html");
+    printf ("GNU = %d.%d\n", __GNUC__, __GNUC_MINOR__);
 
-    struct Node_t* root    = new_node (50);
-    struct Node_t* node_12 = new_node (12);
-    struct Node_t* node_70 = new_node (70);
-    struct Node_t* node_5  = new_node ( 5);
-    struct Node_t* node_15 = new_node (15);
-    struct Node_t* node_60 = new_node (60);
+    printf ("%ld", _POSIX_C_SOURCE);
+    open_log_file ("../build/dump.html");
 
-    root->left     = node_12;
-    root->right    = node_70;
-    node_12->left  = node_5;
-    node_12->right = node_15;
-    node_70->left  = node_60;
+    char* str_root = strdup ("animal");
+    struct Node_t* root                       = new_node (str_root);
+
+    char* str_node_poltorashka = strdup ("poltorashka");
+    struct Node_t* node_poltorashka           = new_node (str_node_poltorashka);
+
+    char* str_node_teaches_discrete_math = strdup ("teaches discrete math");
+    struct Node_t* node_teaches_discrete_math = new_node (str_node_teaches_discrete_math);
+
+    char* str_node_burcev = strdup ("burcev");
+    struct Node_t* node_burcev                = new_node (str_node_burcev);
+
+    char* str_node_teaches_physics = strdup ("teaches physics");
+    struct Node_t* node_teaches_physics       = new_node (str_node_teaches_physics);
+
+    char* str_node_ovchos = strdup ("ovchos");
+    struct Node_t* node_ovchos                = new_node (str_node_ovchos);
+
+    char* str_node_chubarov = strdup ("chubarov");
+    struct Node_t* node_chubarov              = new_node (str_node_chubarov);
+
+    root->left                        = node_poltorashka;
+    root->right                       = node_teaches_discrete_math;
+    node_teaches_discrete_math->left  = node_burcev;
+    node_teaches_discrete_math->right = node_teaches_physics;
+    node_teaches_physics->left        = node_ovchos;
+    node_teaches_physics->right       = node_chubarov;
 
     write_log_file (root, "before insert");
 
@@ -57,12 +81,24 @@ int main (void)
 
     printf ("\ninorder: ");
     print_tree_inorder   (root);
+    printf ("\n");
 
-    insert_node (root, 17);
-    write_log_file (root, "after insert 17");
+    while (true)
+    {
+        akinator_game (root);
 
-    insert_node (root, 52);
-    write_log_file (root, "after insert 52");
+        printf ("do you wanna play again?");
+        printf ("[y/n]\n");
+
+        int answer_for_restart = getchar();
+        clean_buffer ();
+
+        if      (answer_for_restart == 'y') ;
+        else if (answer_for_restart == 'n') break;
+        else printf ("why you write this, bye bye...\n");
+    }
+
+    write_log_file (root, "after insert");
 
     fclose (LOG_FILE);
 
@@ -71,12 +107,10 @@ int main (void)
     return 0;
 }
 
-struct Node_t* new_node (int data)
+struct Node_t* new_node (char* data)
 {
     struct Node_t* node = (struct Node_t*) calloc (1, sizeof(*node));
     assert (node); //FIXME
-
-    fprintf (stderr, "MEM 0x%p: calloc()\n", node);
 
     node->data  = data;
     node->left  = NULL;
@@ -87,27 +121,91 @@ struct Node_t* new_node (int data)
     return node;
 }
 
-struct Node_t* insert_node (struct Node_t* node, int data)
+#if (__GNUC__ < 13 && __GNUC_MINOR__ < 2)
+    #error error subsystem please reinstall subsystem.
+#endif
+
+char* get_and_prepare_string (const char* question)
 {
-    if (data < node->data)
-    {
-        if (node->left)
-            insert_node (node->left, data);
-        else
-            node->left  = new_node (data);
-    }
-    else
-    {
-        if (node->right)
-            insert_node (node->right, data);
-        else
-            node->right = new_node (data);
-    }
+    printf ("%s", question);
+
+    char* object = NULL;
+    size_t size_max = 0;
+
+    getline (&object, &size_max, stdin);
+
+    size_t size = strlen (object);
+
+    if (size == 0)
+        return NULL;
+
+    if (object[size - 1] == '\n')
+        object[size - 1] =  '\0';
+
+    printf ("str = \"%s\"\n", object);
+
+    return object;
+}
+
+struct Node_t* add_info (struct Node_t* node)
+{
+    struct Node_t* ptr_left  = new_node ("0");
+    struct Node_t* ptr_right = new_node ("0");
+
+    node->left  = ptr_left;
+    node->right = ptr_right;
+
+    char* new_object  = get_and_prepare_string ("who tf is this?\n");
+
+    ptr_left->data = new_object;
+    ptr_right->data = node->data;
+
+    char* diff_object = get_and_prepare_string ("how are they different?\n");
+
+    node->data = diff_object;
+
+    write_log_file (node, "adding a node");
 
     return node;
 }
 
-struct Node_t* iterativly_insert (struct Node_t* node, int data)  // net seal
+void clean_buffer(void)
+{
+    while((getchar()) != '\n') {;}
+}
+
+struct Node_t* akinator_game (struct Node_t* node)
+{
+    while (node && node->left && node->right)
+    {
+        printf ("\"%s\"?\n", node->data);
+        printf ("[y/n]\n");
+
+        int answer = getchar();
+        clean_buffer ();       //TODO - func = getchar + clean_buffer
+
+        if      (answer == 'y') node = node->left;
+        else if (answer == 'n') node = node->right;
+        else printf ("it isn't 'y' or 'n' --- error.\n");
+    }
+
+    printf ("Is it the RIGHT answer: \"%s\"?\n[y/n]\n", node->data);
+
+    int final_answer = getchar();
+    clean_buffer ();
+
+    if (final_answer == 'y')
+    {
+        printf ("lol, it was so easy...\n");
+        return node;
+    }       //TODO - buffer clean, loop (restart akinator_game)
+
+    add_info (node);
+
+    return node;
+}
+
+struct Node_t* iterativly_insert (struct Node_t* node, char* data)
 {
     while (true)
     {
@@ -136,7 +234,7 @@ int delete_sub_tree (struct Node_t* node)
 
     node->parent = NULL;
 
-    fprintf (stderr, "MEM 0x%p: free()\n", node);
+    free (node->data);
 
     free (node);
 
@@ -148,15 +246,15 @@ int print_tree_preorder (struct Node_t* root)
     if (!root)
         return 1; //FIXME
 
-    printf ("(");
+    printf ("( ");
 
-    printf ("%d ",  root->data);
+    printf ("\"%s\" ",  root->data);
 
     if (root->left)  print_tree_preorder (root->left);
 
     if (root->right) print_tree_preorder (root->right);
 
-    printf (")");
+    printf (") ");
 
     return 0;
 }
@@ -166,15 +264,15 @@ int print_tree_postorder (struct Node_t* root)
     if (!root)
         return 1; //FIXME
 
-    printf ("(");
+    printf ("( ");
 
     if (root->left)  print_tree_postorder (root->left);
 
     if (root->right) print_tree_postorder (root->right);
 
-    printf ("%d ",  root->data);
+    printf ("\"%s\" ",  root->data);
 
-    printf (")");
+    printf (") ");
 
     return 0;
 }
@@ -184,20 +282,20 @@ int print_tree_inorder (struct Node_t* root)
     if (!root)
         return 1; //FIXME
 
-    printf ("(");
+    printf ("( ");
 
     if (root->left)  print_tree_inorder (root->left);
 
-    printf ("%d ",  root->data);
+    printf ("\"%s\" ",  root->data);
 
     if (root->right) print_tree_inorder (root->right);
 
-    printf (")");
+    printf (") ");
 
     return 0;
 }
 
-const char* graph_dump (struct Node_t* root)
+char* graph_dump (struct Node_t* root)
 {
     assert (root);
 
@@ -239,7 +337,7 @@ void print_tree_preorder_for_file (struct Node_t* root, FILE* filename)
     if (!root)
         return ; //FIXME
 
-    fprintf (filename, "node%p [shape=Mrecord; label = \" { [%p] | data = %3d | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFFFD0\"];\n",
+    fprintf (filename, "node%p [shape=Mrecord; label = \" { [%p] | data = %3s | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFFFD0\"];\n",
              root, root, root->data, root->left, root->right);
 
     if (root->left)

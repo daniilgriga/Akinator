@@ -3,7 +3,7 @@
 
 struct Node_t
 {
-    int data;
+    char* data;
 
     struct Node_t* left;
     struct Node_t* right;
