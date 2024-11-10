@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <sys/stat.h>
 
 #include "head.h"
 
@@ -32,22 +33,30 @@ void clean_buffer(void);
 
 char* get_and_prepare_string (const char* question);
 
-int write_database (struct Node_t* root, FILE* filename);
+int write_database (struct Node_t* root);
+
+struct Node_t* read_node (void);
+
+struct Node_t* read_database (FILE* filename);
 
 int write_log_file (struct Node_t* root, const char* reason_bro/* in c++ " = doesn't_care_bro"*/);
+
+char* CURRENT_PTR = NULL;
 
 FILE* LOG_FILE = NULL;
 
 int main (void)
 {
-    FILE* database = fopen ("database.txt", "w");
+    FILE* database = fopen ("database.txt", "r");
+
+    struct Node_t* root = read_database (database);
 
     printf ("GNU = %d.%d\n", __GNUC__, __GNUC_MINOR__);
 
     printf ("%ld", _POSIX_C_SOURCE);
     open_log_file ("../build/dump.html");
 
-    char* str_root = strdup ("animal");
+    /*char* str_root = strdup ("animal");
     struct Node_t* root                       = new_node (str_root);
 
     char* str_node_poltorashka = strdup ("poltorashka");
@@ -74,7 +83,7 @@ int main (void)
     node_teaches_discrete_math->right = node_teaches_physics;
     node_teaches_physics->left        = node_ovchos;
     node_teaches_physics->right       = node_chubarov;
-
+    */
 
     write_log_file (root, "before insert");
 
@@ -105,7 +114,7 @@ int main (void)
 
             case 'w':
             {
-                write_database (root, database);
+                write_database (root);
                 break;
             }
 
@@ -130,6 +139,60 @@ int main (void)
     delete_sub_tree (root);
 
     return 0;
+}
+
+
+struct Node_t* read_database (FILE* file)
+{
+    struct stat st = {};
+    fstat (fileno (file), &st);
+    long file_size = st.st_size;
+
+    char* buffer = calloc ( (size_t) file_size + 1, sizeof(buffer[0]));
+
+    int count = fread (buffer, sizeof(buffer[0]), file_size, file);
+    if (count != file_size)
+        printf ("count = %d != file_size = %d", count, file_size);
+
+    fclose (file);
+
+    CURRENT_PTR = buffer;
+
+    printf ("CURRENT_PTR = [%p]", CURRENT_PTR);
+
+    return read_node ();
+}
+
+struct Node_t* read_node (void)
+{
+    char* ptr = strchr (CURRENT_PTR, '{');
+
+    printf ("CURRENT_PTR = <%s>, ptr = [%p]\n", CURRENT_PTR, ptr);
+
+    if (ptr == NULL)
+        printf ("no database\n");
+
+    char* ptr_quote_1 = strchr (CURRENT_PTR, '"');
+    if (ptr_quote_1 == NULL)
+        return NULL;
+
+    char* ptr_quote_2 = strchr (ptr_quote_1 + 1, '"');
+    CURRENT_PTR = ptr_quote_2 + 1;
+
+    char* str = strndup (ptr_quote_1 + 1, ptr_quote_2 - ptr_quote_1 - 1);
+
+    struct Node_t* node = new_node (str);
+
+    //{ - rekurdiya
+    //} - return last {
+
+    node->left  = read_node ();
+    node->right = read_node ();
+
+    printf ("node = [%p]\nnode->left = [%p]\nnode->right = [%p]\n", node, node->left, node->right);
+
+
+    return node;
 }
 
 struct Node_t* new_node (char* data)
@@ -201,6 +264,8 @@ void clean_buffer(void)
 
 struct Node_t* akinator_game (struct Node_t* node)
 {
+    printf ("node = [%p]\nnode->left = [%p]\nonde->right = [%p]\n", node, node->left, node->right);
+
     while (node && node->left && node->right)
     {
         printf ("\"%s\"?\n", node->data);
@@ -266,11 +331,15 @@ int delete_sub_tree (struct Node_t* node)
     return 0;
 }
 
-int write_database (struct Node_t* root, FILE* filename)
+int write_database (struct Node_t* root)
 {
-    assert (filename); //FIXME
+    FILE* database = fopen ("database.txt", "w");
 
-    print_tree_preorder (root, filename, 0);
+    assert (database); //FIXME
+
+    print_tree_preorder (root, database, 0);
+
+    fclose (database);
 
     return 0;
 }

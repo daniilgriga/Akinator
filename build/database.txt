@@ -1,13 +1,11 @@
-{ "animal" 
-    { "lohhhhh" 
-        { "ded" } 
-        { "poltorashka" } 
-    } 
-    { "teaches discrete math" 
-        { "burcev" } 
-        { "teaches physics" 
-            { "ovchos" } 
-            { "chubarov" } 
-        } 
-    } 
-} 
+
+{ "animal"
+        { "poltorashka" }
+    { "teaches discrete math"
+        { "burcev" }
+        { "teaches physics"
+            { "ovchos" }
+            { "chubarov" }
+        }
+    }
+}
