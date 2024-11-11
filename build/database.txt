@@ -1,11 +1,25 @@
-
-{ "animal"
-        { "poltorashka" }
-    { "teaches discrete math"
-        { "burcev" }
-        { "teaches physics"
-            { "ovchos" }
-            { "chubarov" }
-        }
-    }
-}
+{ "teacher" 
+    { "teacher of programming" 
+        { "ded32" } 
+        { "ovchinkin" } 
+    } 
+    { "football player" 
+        { "plays for the caRTel" 
+            { "defender" 
+                { "left defender" 
+                    { "tolik" } 
+                    { "dan" } 
+                } 
+                { "center forward" 
+                    { "artem" } 
+                    { "gosha" } 
+                } 
+            } 
+            { "loh" } 
+        } 
+        { "coach" 
+            { "valentin spivak guardiola" } 
+            { "FUPM REF" } 
+        } 
+    } 
+} 

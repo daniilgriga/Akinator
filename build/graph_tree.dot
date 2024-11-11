@@ -1,18 +1,38 @@
 digraph
 {
 bgcolor="transparent"
-node0x503000000040 [shape=Mrecord; label = " { [0x503000000040] | data = animal | { left = [0x503000000070] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x503000000040 [shape=Mrecord; label = " { [0x503000000040] | data = teacher | { left = [0x503000000070] | right = [0x503000000130] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x503000000040 -> node0x503000000070
-;node0x503000000070 [shape=Mrecord; label = " { [0x503000000070] | data = poltorashka | { left = [0x5030000000d0] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+;node0x503000000040 -> node0x503000000130
+;node0x503000000070 [shape=Mrecord; label = " { [0x503000000070] | data = teacher of programming | { left = [0x5030000000d0] | right = [0x503000000100] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x503000000070 -> node0x5030000000d0
-;node0x5030000000d0 [shape=Mrecord; label = " { [0x5030000000d0] | data = teaches discrete math | { left = [0x503000000100] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5030000000d0 -> node0x503000000100
-;node0x503000000100 [shape=Mrecord; label = " { [0x503000000100] | data = burcev | { left = [0x503000000130] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000100 -> node0x503000000130
-;node0x503000000130 [shape=Mrecord; label = " { [0x503000000130] | data = teaches physics | { left = [0x503000000160] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+;node0x503000000070 -> node0x503000000100
+;node0x5030000000d0 [shape=Mrecord; label = " { [0x5030000000d0] | data = ded32 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x503000000100 [shape=Mrecord; label = " { [0x503000000100] | data = ovchinkin | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x503000000130 [shape=Mrecord; label = " { [0x503000000130] | data = football player | { left = [0x503000000160] | right = [0x503000000340] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x503000000130 -> node0x503000000160
-;node0x503000000160 [shape=Mrecord; label = " { [0x503000000160] | data = ovchos | { left = [0x503000000190] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000160 -> node0x503000000190
-;node0x503000000190 [shape=Mrecord; label = " { [0x503000000190] | data = chubarov | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+;node0x503000000130 -> node0x503000000340
+;node0x503000000160 [shape=Mrecord; label = " { [0x503000000160] | data = plays for the caRTel | { left = [0x5030000001c0] | right = [0x503000000310] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x503000000160 -> node0x5030000001c0
+;node0x503000000160 -> node0x503000000310
+;node0x5030000001c0 [shape=Mrecord; label = " { [0x5030000001c0] | data = defender | { left = [0x5030000001f0] | right = [0x503000000280] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x5030000001c0 -> node0x5030000001f0
+;node0x5030000001c0 -> node0x503000000280
+;node0x5030000001f0 [shape=Mrecord; label = " { [0x5030000001f0] | data = left defender | { left = [0x503000000220] | right = [0x503000000250] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x5030000001f0 -> node0x503000000220
+;node0x5030000001f0 -> node0x503000000250
+;node0x503000000220 [shape=Mrecord; label = " { [0x503000000220] | data = tolik | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x503000000250 [shape=Mrecord; label = " { [0x503000000250] | data = dan | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x503000000280 [shape=Mrecord; label = " { [0x503000000280] | data = center forward | { left = [0x5030000002b0] | right = [0x5030000002e0] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x503000000280 -> node0x5030000002b0
+;node0x503000000280 -> node0x5030000002e0
+;node0x5030000002b0 [shape=Mrecord; label = " { [0x5030000002b0] | data = artem | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x5030000002e0 [shape=Mrecord; label = " { [0x5030000002e0] | data = gosha | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x503000000310 [shape=Mrecord; label = " { [0x503000000310] | data = loh | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x503000000340 [shape=Mrecord; label = " { [0x503000000340] | data = coach | { left = [0x503000000370] | right = [0x5030000003d0] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x503000000340 -> node0x503000000370
+;node0x503000000340 -> node0x5030000003d0
+;node0x503000000370 [shape=Mrecord; label = " { [0x503000000370] | data = valentin spivak guardiola | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x5030000003d0 [shape=Mrecord; label = " { [0x5030000003d0] | data = FUPM REF | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
 
 }

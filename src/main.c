@@ -35,7 +35,7 @@ char* get_and_prepare_string (const char* question);
 
 int write_database (struct Node_t* root);
 
-struct Node_t* read_node (void);
+struct Node_t* read_node (int level);
 
 struct Node_t* read_database (FILE* filename);
 
@@ -51,39 +51,12 @@ int main (void)
 
     struct Node_t* root = read_database (database);
 
+    printf ("[%p]\n", root);
+
     printf ("GNU = %d.%d\n", __GNUC__, __GNUC_MINOR__);
 
     printf ("%ld", _POSIX_C_SOURCE);
     open_log_file ("../build/dump.html");
-
-    /*char* str_root = strdup ("animal");
-    struct Node_t* root                       = new_node (str_root);
-
-    char* str_node_poltorashka = strdup ("poltorashka");
-    struct Node_t* node_poltorashka           = new_node (str_node_poltorashka);
-
-    char* str_node_teaches_discrete_math = strdup ("teaches discrete math");
-    struct Node_t* node_teaches_discrete_math = new_node (str_node_teaches_discrete_math);
-
-    char* str_node_burcev = strdup ("burcev");
-    struct Node_t* node_burcev                = new_node (str_node_burcev);
-
-    char* str_node_teaches_physics = strdup ("teaches physics");
-    struct Node_t* node_teaches_physics       = new_node (str_node_teaches_physics);
-
-    char* str_node_ovchos = strdup ("ovchos");
-    struct Node_t* node_ovchos                = new_node (str_node_ovchos);
-
-    char* str_node_chubarov = strdup ("chubarov");
-    struct Node_t* node_chubarov              = new_node (str_node_chubarov);
-
-    root->left                        = node_poltorashka;
-    root->right                       = node_teaches_discrete_math;
-    node_teaches_discrete_math->left  = node_burcev;
-    node_teaches_discrete_math->right = node_teaches_physics;
-    node_teaches_physics->left        = node_ovchos;
-    node_teaches_physics->right       = node_chubarov;
-    */
 
     write_log_file (root, "before insert");
 
@@ -100,7 +73,7 @@ int main (void)
     int loop = 1;
     while (loop)
     {
-        printf ("what do you wanna doing?\n[a]kinator game, [w]rite to database, [q]uit\n");
+        printf ("what do you wanna doing?\n[a]kinator game, [q]uit and write to database, [Q]uit\n");
         int answer_for_mode = getchar();
         clean_buffer ();
 
@@ -112,13 +85,14 @@ int main (void)
                 break;
             }
 
-            case 'w':
+            case 'q':
             {
                 write_database (root);
+                loop = 0;
                 break;
             }
 
-            case 'q':
+            case 'Q':
             {
                 loop = 0;
                 break;
@@ -132,7 +106,7 @@ int main (void)
         }
     }
 
-    write_log_file (root, "after insert");
+    write_log_file (root, "end of programm");
 
     fclose (LOG_FILE);
 
@@ -140,7 +114,6 @@ int main (void)
 
     return 0;
 }
-
 
 struct Node_t* read_database (FILE* file)
 {
@@ -150,49 +123,89 @@ struct Node_t* read_database (FILE* file)
 
     char* buffer = calloc ( (size_t) file_size + 1, sizeof(buffer[0]));
 
-    int count = fread (buffer, sizeof(buffer[0]), file_size, file);
-    if (count != file_size)
-        printf ("count = %d != file_size = %d", count, file_size);
+    size_t count = fread (buffer, sizeof(buffer[0]), (size_t) file_size, file);
+    if ((long) count != file_size)
+        printf ("count = %zu != file_size = %ld", count, file_size);
 
     fclose (file);
 
     CURRENT_PTR = buffer;
 
-    printf ("CURRENT_PTR = [%p]", CURRENT_PTR);
+    printf ("CURRENT_PTR = [%p]\n", CURRENT_PTR);
 
-    return read_node ();
+    return read_node (0);
 }
 
-struct Node_t* read_node (void)
+#define INDENT printf ("%*s", level*2, "")
+
+struct Node_t* read_node (int level)
 {
-    char* ptr = strchr (CURRENT_PTR, '{');
+    printf ("\n");
+    INDENT; printf ("Starting read_node(). Cur = %.40s...\n", CURRENT_PTR);
 
-    printf ("CURRENT_PTR = <%s>, ptr = [%p]\n", CURRENT_PTR, ptr);
+    int n = -1;
+    sscanf (CURRENT_PTR, " { %n", &n);
+    if (n < 0) { INDENT; printf ("No '{' found. Return NULL.\n"); return NULL; }
 
-    if (ptr == NULL)
-        printf ("no database\n");
+    CURRENT_PTR += n;
 
-    char* ptr_quote_1 = strchr (CURRENT_PTR, '"');
-    if (ptr_quote_1 == NULL)
-        return NULL;
+    INDENT; printf ("Got an '{'. Creating a node. Cur = %.40s...\n", CURRENT_PTR);
 
-    char* ptr_quote_2 = strchr (ptr_quote_1 + 1, '"');
-    CURRENT_PTR = ptr_quote_2 + 1;
+    struct Node_t* node = new_node (NULL);
 
-    char* str = strndup (ptr_quote_1 + 1, ptr_quote_2 - ptr_quote_1 - 1);
+    n = -1;
+    char data[50] = "";
+    sscanf (CURRENT_PTR, " \"%[^\"]\" %n", data, &n);
+    if (n < 0) { INDENT; printf ("No DATA found. Return NULL.\n"); return NULL; }
 
-    struct Node_t* node = new_node (str);
+    CURRENT_PTR += n;
 
-    //{ - rekurdiya
-    //} - return last {
+    INDENT; printf ("Got a NAME: '%s'. Cur = %.40s...\n", data, CURRENT_PTR);
 
-    node->left  = read_node ();
-    node->right = read_node ();
+    node->data = strdup (data);
 
-    printf ("node = [%p]\nnode->left = [%p]\nnode->right = [%p]\n", node, node->left, node->right);
+    n = -1;
+    char chr = '\0';
+    sscanf (CURRENT_PTR, " %c %n", &chr, &n);
+    if (n < 0) { INDENT; printf ("No ending symbol (1) found. Return NULL.\n"); return NULL; }
 
+    if (chr == '}')
+        {
+        CURRENT_PTR += n;
 
-    return node;
+        INDENT; printf ("Got a '}', SHORT Node END (data = '%s'). Return node. Cur = %.40s...\n", data, CURRENT_PTR);
+
+        return node;
+        }
+
+    INDENT; printf ("'}' NOT found. Supposing a left/right subtree. Reading left node. Cur = %.40s...\n", CURRENT_PTR);
+
+    node->left = read_node (level+1);
+
+    INDENT; printf ("\n" "LEFT subtree read. Data of left root = '%s'\n\n", node->left->data);
+
+    printf ("Reading right node. Cur = %.40s...\n", CURRENT_PTR);
+
+    node->right = read_node (level+1);
+
+    INDENT; printf ("\n" "RIGHT subtree read. Data of right root = '%s'\n", node->right->data);
+
+    chr = '\0';
+    sscanf (CURRENT_PTR, " %c %n", &chr, &n);
+    if (n < 0) { INDENT; printf ("No ending symbol (2) found. Return NULL.\n"); return NULL; }
+
+    if (chr == '}')
+        {
+        CURRENT_PTR += n;
+
+        INDENT; printf ("Got a '}', FULL Node END (data = '%s'). Return node. Cur = %.40s...\n", data, CURRENT_PTR);
+
+        return node;
+        }
+
+    INDENT; printf ("Does NOT get '}'. Syntax error. Return NULL. Cur = %.20s...\n", CURRENT_PTR);
+
+    return NULL;
 }
 
 struct Node_t* new_node (char* data)
@@ -264,8 +277,6 @@ void clean_buffer(void)
 
 struct Node_t* akinator_game (struct Node_t* node)
 {
-    printf ("node = [%p]\nnode->left = [%p]\nonde->right = [%p]\n", node, node->left, node->right);
-
     while (node && node->left && node->right)
     {
         printf ("\"%s\"?\n", node->data);
