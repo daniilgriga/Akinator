@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <stdarg.h>
 
 #include "head.h"
 
@@ -31,7 +32,7 @@ struct Node_t* add_info (struct Node_t* node);
 
 void clean_buffer(void);
 
-char* get_and_prepare_string (const char* question);
+char* get_and_prepare_string (const char* question, ...);
 
 int write_database (struct Node_t* root);
 
@@ -159,7 +160,8 @@ struct Node_t* read_node (int level)
     sscanf (CURRENT_PTR, " \"%n%*[^\"]%n\" %n", &bgn, &end, &n);
     if (n < 0) { INDENT; printf ("No DATA found. Return NULL.\n"); return NULL; }
 
-    node->data = strndup (CURRENT_PTR + bgn, (size_t) (end - bgn));
+    *(CURRENT_PTR + end) = '\0';
+    node->data = CURRENT_PTR + bgn;
 
     INDENT; printf ("Got a NAME: '%s'. Cur = %.40s...\n", node->data, CURRENT_PTR);
 
@@ -220,6 +222,8 @@ struct Node_t* new_node (char* data)
     node->left  = NULL;
     node->right = NULL;
 
+    node->shoot_free = 0;
+
     node->parent = NULL;
 
     return node;
@@ -229,9 +233,14 @@ struct Node_t* new_node (char* data)
     #error error subsystem please reinstall subsystem.
 #endif
 
-char* get_and_prepare_string (const char* question)
+char* get_and_prepare_string (const char* question, ...)
 {
-    printf ("%s", question);
+    va_list args;
+    va_start (args, question);
+
+    vprintf (question, args);
+
+    va_end (args);
 
     char* object = NULL;
     size_t size_max = 0;
@@ -262,11 +271,14 @@ struct Node_t* add_info (struct Node_t* node)
     char* new_object  = get_and_prepare_string ("who tf is this?\n");
 
     ptr_left->data = new_object;
+    ptr_left->shoot_free = 1;
     ptr_right->data = node->data;
 
-    char* diff_object = get_and_prepare_string ("how are they different?\n");
+    char* diff_object = get_and_prepare_string ("whats the difference between %s and %s. %s is...\n",
+                                                ptr_left->data, node->data, ptr_left->data);
 
     node->data = diff_object;
+    node->shoot_free = 1;
 
     write_log_file (node, "adding a node");
 
@@ -338,12 +350,15 @@ int delete_sub_tree (struct Node_t* node)
 
     node->parent = NULL;
 
-    free (node->data);
+    if (node->shoot_free == 1)
+        free (node->data);
 
     free (node);
 
     return 0;
 }
+
+
 
 int write_database (struct Node_t* root)
 {
@@ -457,8 +472,12 @@ void print_tree_preorder_for_file (struct Node_t* root, FILE* filename)
     if (!root)
         return ; //FIXME
 
-    fprintf (filename, "node%p [shape=Mrecord; label = \" { [%p] | data = %3s | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFFFD0\"];\n",
-             root, root, root->data, root->left, root->right);
+    if (root->shoot_free == 0)
+        fprintf (filename, "node%p [shape=Mrecord; label = \" { [%p] | data = %3s | shoot_free = %d | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFFFD0\"];\n",
+             root, root, root->data, root->shoot_free, root->left, root->right);
+    else
+        fprintf (filename, "node%p [shape=Mrecord; label = \" { [%p] | data = %3s | shoot_free = %d | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFE0E0\"];\n",
+             root, root, root->data, root->shoot_free, root->left, root->right);
 
     if (root->left)
         fprintf (filename, "node%p -> node%p\n;", root, root->left);
@@ -496,6 +515,8 @@ int write_log_file (struct Node_t* root, const char* reason_bro)
     const char* filename = graph_dump (root);
 
     fprintf (LOG_FILE, "\n\n<img src=\"%s\">", filename);
+
+    fflush (LOG_FILE);
 
     return 0;
 }

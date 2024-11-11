@@ -8,6 +8,8 @@ struct Node_t
     struct Node_t* left;
     struct Node_t* right;
     struct Node_t* parent;
+
+    int shoot_free;
 };
 
 #endif

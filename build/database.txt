@@ -12,7 +12,10 @@
                 } 
                 { "center forward" 
                     { "artem" } 
-                    { "gosha" } 
+                    { "middle defender" 
+                        { "maxon" } 
+                        { "gosha" } 
+                    } 
                 } 
             } 
             { "loh" } 

@@ -1,38 +1,42 @@
 digraph
 {
 bgcolor="transparent"
-node0x503000000040 [shape=Mrecord; label = " { [0x503000000040] | data = teacher | { left = [0x503000000070] | right = [0x503000000130] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000040 -> node0x503000000070
-;node0x503000000040 -> node0x503000000130
-;node0x503000000070 [shape=Mrecord; label = " { [0x503000000070] | data = teacher of programming | { left = [0x5030000000d0] | right = [0x503000000100] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000070 -> node0x5030000000d0
-;node0x503000000070 -> node0x503000000100
-;node0x5030000000d0 [shape=Mrecord; label = " { [0x5030000000d0] | data = ded32 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000100 [shape=Mrecord; label = " { [0x503000000100] | data = ovchinkin | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000130 [shape=Mrecord; label = " { [0x503000000130] | data = football player | { left = [0x503000000160] | right = [0x503000000340] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000130 -> node0x503000000160
-;node0x503000000130 -> node0x503000000340
-;node0x503000000160 [shape=Mrecord; label = " { [0x503000000160] | data = plays for the caRTel | { left = [0x5030000001c0] | right = [0x503000000310] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000160 -> node0x5030000001c0
-;node0x503000000160 -> node0x503000000310
-;node0x5030000001c0 [shape=Mrecord; label = " { [0x5030000001c0] | data = defender | { left = [0x5030000001f0] | right = [0x503000000280] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5030000001c0 -> node0x5030000001f0
-;node0x5030000001c0 -> node0x503000000280
-;node0x5030000001f0 [shape=Mrecord; label = " { [0x5030000001f0] | data = left defender | { left = [0x503000000220] | right = [0x503000000250] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5030000001f0 -> node0x503000000220
-;node0x5030000001f0 -> node0x503000000250
-;node0x503000000220 [shape=Mrecord; label = " { [0x503000000220] | data = tolik | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000250 [shape=Mrecord; label = " { [0x503000000250] | data = dan | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000280 [shape=Mrecord; label = " { [0x503000000280] | data = center forward | { left = [0x5030000002b0] | right = [0x5030000002e0] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000280 -> node0x5030000002b0
-;node0x503000000280 -> node0x5030000002e0
-;node0x5030000002b0 [shape=Mrecord; label = " { [0x5030000002b0] | data = artem | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5030000002e0 [shape=Mrecord; label = " { [0x5030000002e0] | data = gosha | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000310 [shape=Mrecord; label = " { [0x503000000310] | data = loh | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000340 [shape=Mrecord; label = " { [0x503000000340] | data = coach | { left = [0x503000000370] | right = [0x5030000003d0] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x503000000340 -> node0x503000000370
-;node0x503000000340 -> node0x5030000003d0
-;node0x503000000370 [shape=Mrecord; label = " { [0x503000000370] | data = valentin spivak guardiola | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5030000003d0 [shape=Mrecord; label = " { [0x5030000003d0] | data = FUPM REF | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000010 [shape=Mrecord; label = " { [0x504000000010] | data = teacher | shoot_free = 0 | { left = [0x504000000050] | right = [0x504000000110] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000010 -> node0x504000000050
+;node0x504000000010 -> node0x504000000110
+;node0x504000000050 [shape=Mrecord; label = " { [0x504000000050] | data = teacher of programming | shoot_free = 0 | { left = [0x504000000090] | right = [0x5040000000d0] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000050 -> node0x504000000090
+;node0x504000000050 -> node0x5040000000d0
+;node0x504000000090 [shape=Mrecord; label = " { [0x504000000090] | data = ded32 | shoot_free = 0 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x5040000000d0 [shape=Mrecord; label = " { [0x5040000000d0] | data = ovchinkin | shoot_free = 0 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000110 [shape=Mrecord; label = " { [0x504000000110] | data = football player | shoot_free = 0 | { left = [0x504000000150] | right = [0x504000000390] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000110 -> node0x504000000150
+;node0x504000000110 -> node0x504000000390
+;node0x504000000150 [shape=Mrecord; label = " { [0x504000000150] | data = plays for the caRTel | shoot_free = 0 | { left = [0x504000000190] | right = [0x504000000350] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000150 -> node0x504000000190
+;node0x504000000150 -> node0x504000000350
+;node0x504000000190 [shape=Mrecord; label = " { [0x504000000190] | data = defender | shoot_free = 0 | { left = [0x5040000001d0] | right = [0x504000000290] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000190 -> node0x5040000001d0
+;node0x504000000190 -> node0x504000000290
+;node0x5040000001d0 [shape=Mrecord; label = " { [0x5040000001d0] | data = left defender | shoot_free = 0 | { left = [0x504000000210] | right = [0x504000000250] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x5040000001d0 -> node0x504000000210
+;node0x5040000001d0 -> node0x504000000250
+;node0x504000000210 [shape=Mrecord; label = " { [0x504000000210] | data = tolik | shoot_free = 0 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000250 [shape=Mrecord; label = " { [0x504000000250] | data = dan | shoot_free = 0 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000290 [shape=Mrecord; label = " { [0x504000000290] | data = center forward | shoot_free = 0 | { left = [0x5040000002d0] | right = [0x504000000310] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000290 -> node0x5040000002d0
+;node0x504000000290 -> node0x504000000310
+;node0x5040000002d0 [shape=Mrecord; label = " { [0x5040000002d0] | data = artem | shoot_free = 0 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000310 [shape=Mrecord; label = " { [0x504000000310] | data = middle defender | shoot_free = 1 | { left = [0x504000000450] | right = [0x504000000490] } }"; style = filled; fillcolor = "#FFE0E0"];
+node0x504000000310 -> node0x504000000450
+;node0x504000000310 -> node0x504000000490
+;node0x504000000450 [shape=Mrecord; label = " { [0x504000000450] | data = maxon | shoot_free = 1 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFE0E0"];
+node0x504000000490 [shape=Mrecord; label = " { [0x504000000490] | data = gosha | shoot_free = 0 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000350 [shape=Mrecord; label = " { [0x504000000350] | data = loh | shoot_free = 0 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000390 [shape=Mrecord; label = " { [0x504000000390] | data = coach | shoot_free = 0 | { left = [0x5040000003d0] | right = [0x504000000410] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000390 -> node0x5040000003d0
+;node0x504000000390 -> node0x504000000410
+;node0x5040000003d0 [shape=Mrecord; label = " { [0x5040000003d0] | data = valentin spivak guardiola | shoot_free = 0 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x504000000410 [shape=Mrecord; label = " { [0x504000000410] | data = FUPM REF | shoot_free = 0 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
 
 }
