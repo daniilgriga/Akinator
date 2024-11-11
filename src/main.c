@@ -156,15 +156,16 @@ struct Node_t* read_node (int level)
     n = -1;
     int bgn = 0;
     int end = 0;
-    char data[50] = "";
-    sscanf (CURRENT_PTR, " \"%n%[^\"]%n\" %n", &bgn, data, &end, &n);
+    sscanf (CURRENT_PTR, " \"%n%*[^\"]%n\" %n", &bgn, &end, &n);
     if (n < 0) { INDENT; printf ("No DATA found. Return NULL.\n"); return NULL; }
+
+    node->data = strndup (CURRENT_PTR + bgn, (size_t) (end - bgn));
+
+    INDENT; printf ("Got a NAME: '%s'. Cur = %.40s...\n", node->data, CURRENT_PTR);
 
     CURRENT_PTR += n;
 
-    INDENT; printf ("Got a NAME: '%s'. Cur = %.40s...\n", data, CURRENT_PTR);
-
-    node->data = strndup (data, (size_t) (end - bgn));
+    INDENT; printf ("Shifted CURRENT_PTR: '%s'. Cur = %.40s...\n", node->data, CURRENT_PTR);
 
     n = -1;
     char chr = '\0';
@@ -175,7 +176,7 @@ struct Node_t* read_node (int level)
     {
         CURRENT_PTR += n;
 
-        INDENT; printf ("Got a '}', SHORT Node END (data = '%s'). Return node. Cur = %.40s...\n", data, CURRENT_PTR);
+        INDENT; printf ("Got a '}', SHORT Node END (data = '%s'). Return node. Cur = %.40s...\n", node->data, CURRENT_PTR);
 
         return node;
     }
@@ -200,7 +201,7 @@ struct Node_t* read_node (int level)
     {
         CURRENT_PTR += n;
 
-        INDENT; printf ("Got a '}', FULL Node END (data = '%s'). Return node. Cur = %.40s...\n", data, CURRENT_PTR);
+        INDENT; printf ("Got a '}', FULL Node END (data = '%s'). Return node. Cur = %.40s...\n", node->data, CURRENT_PTR);
 
         return node;
     }
