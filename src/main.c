@@ -154,15 +154,17 @@ struct Node_t* read_node (int level)
     struct Node_t* node = new_node (NULL);
 
     n = -1;
+    int bgn = 0;
+    int end = 0;
     char data[50] = "";
-    sscanf (CURRENT_PTR, " \"%[^\"]\" %n", data, &n);
+    sscanf (CURRENT_PTR, " \"%n%[^\"]%n\" %n", &bgn, data, &end, &n);
     if (n < 0) { INDENT; printf ("No DATA found. Return NULL.\n"); return NULL; }
 
     CURRENT_PTR += n;
 
     INDENT; printf ("Got a NAME: '%s'. Cur = %.40s...\n", data, CURRENT_PTR);
 
-    node->data = strdup (data);
+    node->data = strndup (data, (size_t) (end - bgn));
 
     n = -1;
     char chr = '\0';
@@ -170,23 +172,23 @@ struct Node_t* read_node (int level)
     if (n < 0) { INDENT; printf ("No ending symbol (1) found. Return NULL.\n"); return NULL; }
 
     if (chr == '}')
-        {
+    {
         CURRENT_PTR += n;
 
         INDENT; printf ("Got a '}', SHORT Node END (data = '%s'). Return node. Cur = %.40s...\n", data, CURRENT_PTR);
 
         return node;
-        }
+    }
 
     INDENT; printf ("'}' NOT found. Supposing a left/right subtree. Reading left node. Cur = %.40s...\n", CURRENT_PTR);
 
-    node->left = read_node (level+1);
+    node->left = read_node (level + 1);
 
     INDENT; printf ("\n" "LEFT subtree read. Data of left root = '%s'\n\n", node->left->data);
 
     printf ("Reading right node. Cur = %.40s...\n", CURRENT_PTR);
 
-    node->right = read_node (level+1);
+    node->right = read_node (level + 1);
 
     INDENT; printf ("\n" "RIGHT subtree read. Data of right root = '%s'\n", node->right->data);
 
@@ -195,13 +197,13 @@ struct Node_t* read_node (int level)
     if (n < 0) { INDENT; printf ("No ending symbol (2) found. Return NULL.\n"); return NULL; }
 
     if (chr == '}')
-        {
+    {
         CURRENT_PTR += n;
 
         INDENT; printf ("Got a '}', FULL Node END (data = '%s'). Return node. Cur = %.40s...\n", data, CURRENT_PTR);
 
         return node;
-        }
+    }
 
     INDENT; printf ("Does NOT get '}'. Syntax error. Return NULL. Cur = %.20s...\n", CURRENT_PTR);
 
