@@ -18,6 +18,8 @@ int print_tree_inorder   (struct Node_t* root);
 
 int delete_sub_tree (struct Node_t* node);
 
+int buffer_dtor (struct Buffer_t* buffer);
+
 void print_tree_preorder_for_file (struct Node_t* root, FILE* filename);
 
 char* graph_dump (struct Node_t* root);
@@ -36,21 +38,20 @@ char* get_and_prepare_string (const char* question, ...);
 
 int write_database (struct Node_t* root);
 
-struct Node_t* read_node (int level);
+struct Node_t* read_node (int level, struct Buffer_t* buffer);
 
-struct Node_t* read_database (FILE* filename);
+struct Node_t* read_database (FILE* filename, struct Buffer_t* buffer);
 
 int write_log_file (struct Node_t* root, const char* reason_bro/* in c++ " = doesn't_care_bro"*/);
-
-char* CURRENT_PTR = NULL;
 
 FILE* LOG_FILE = NULL;
 
 int main (void)
 {
     FILE* database = fopen ("database.txt", "r");
+    struct Buffer_t buffer = {};
 
-    struct Node_t* root = read_database (database);
+    struct Node_t* root = read_database (database, &buffer);
 
     printf ("[%p]\n", root);
 
@@ -113,102 +114,104 @@ int main (void)
 
     delete_sub_tree (root);
 
+    buffer_dtor (&buffer);
+
     return 0;
 }
 
-struct Node_t* read_database (FILE* file)
+struct Node_t* read_database (FILE* file, struct Buffer_t* buffer)
 {
     struct stat st = {};
     fstat (fileno (file), &st);
     long file_size = st.st_size;
 
-    char* buffer = calloc ( (size_t) file_size + 1, sizeof(buffer[0]));
+    buffer->buffer_ptr = calloc ( (size_t) file_size + 1, sizeof(buffer->buffer_ptr[0]));
 
-    size_t count = fread (buffer, sizeof(buffer[0]), (size_t) file_size, file);
+    printf ("\n\n\n\nbuffer->buffer_ptr = [%p]\n\n\n\n", buffer->buffer_ptr);
+
+    size_t count = fread (buffer->buffer_ptr, sizeof(buffer->buffer_ptr[0]), (size_t) file_size, file);
     if ((long) count != file_size)
         printf ("count = %zu != file_size = %ld", count, file_size);
 
     fclose (file);
 
-    CURRENT_PTR = buffer;
+    buffer->current_ptr = buffer->buffer_ptr;
 
-    printf ("CURRENT_PTR = [%p]\n", CURRENT_PTR);
-
-    return read_node (0);
+    return read_node (0, buffer);
 }
 
 #define INDENT printf ("%*s", level*2, "")
 
-struct Node_t* read_node (int level)
+struct Node_t* read_node (int level, struct Buffer_t* buffer)
 {
     printf ("\n");
-    INDENT; printf ("Starting read_node(). Cur = %.40s...\n", CURRENT_PTR);
+    INDENT; printf ("Starting read_node(). Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr,  buffer->current_ptr, buffer->buffer_ptr);
 
     int n = -1;
-    sscanf (CURRENT_PTR, " { %n", &n);
+    sscanf (buffer->current_ptr, " { %n", &n);
     if (n < 0) { INDENT; printf ("No '{' found. Return NULL.\n"); return NULL; }
 
-    CURRENT_PTR += n;
+    buffer->current_ptr += n;
 
-    INDENT; printf ("Got an '{'. Creating a node. Cur = %.40s...\n", CURRENT_PTR);
+    INDENT; printf ("Got an '{'. Creating a node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr,  buffer->current_ptr, buffer->buffer_ptr);
 
     struct Node_t* node = new_node (NULL);
 
     n = -1;
     int bgn = 0;
     int end = 0;
-    sscanf (CURRENT_PTR, " \"%n%*[^\"]%n\" %n", &bgn, &end, &n);
+    sscanf (buffer->current_ptr, " \"%n%*[^\"]%n\" %n", &bgn, &end, &n);
     if (n < 0) { INDENT; printf ("No DATA found. Return NULL.\n"); return NULL; }
 
-    *(CURRENT_PTR + end) = '\0';
-    node->data = CURRENT_PTR + bgn;
+    *(buffer->current_ptr + end) = '\0';
+    node->data = buffer->current_ptr + bgn;
 
-    INDENT; printf ("Got a NAME: '%s'. Cur = %.40s...\n", node->data, CURRENT_PTR);
+    INDENT; printf ("Got a NAME: '%s'. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr);
 
-    CURRENT_PTR += n;
+    buffer->current_ptr += n;
 
-    INDENT; printf ("Shifted CURRENT_PTR: '%s'. Cur = %.40s...\n", node->data, CURRENT_PTR);
+    INDENT; printf ("Shifted CURRENT_PTR: '%s'. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr);
 
     n = -1;
     char chr = '\0';
-    sscanf (CURRENT_PTR, " %c %n", &chr, &n);
+    sscanf (buffer->current_ptr, " %c %n", &chr, &n);
     if (n < 0) { INDENT; printf ("No ending symbol (1) found. Return NULL.\n"); return NULL; }
 
     if (chr == '}')
     {
-        CURRENT_PTR += n;
+        buffer->current_ptr += n;
 
-        INDENT; printf ("Got a '}', SHORT Node END (data = '%s'). Return node. Cur = %.40s...\n", node->data, CURRENT_PTR);
+        INDENT; printf ("Got a '}', SHORT Node END (data = '%s'). Return node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr);
 
         return node;
     }
 
-    INDENT; printf ("'}' NOT found. Supposing a left/right subtree. Reading left node. Cur = %.40s...\n", CURRENT_PTR);
+    INDENT; printf ("'}' NOT found. Supposing a left/right subtree. Reading left node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr);
 
-    node->left = read_node (level + 1);
+    node->left = read_node (level + 1, buffer);
 
     INDENT; printf ("\n" "LEFT subtree read. Data of left root = '%s'\n\n", node->left->data);
 
-    printf ("Reading right node. Cur = %.40s...\n", CURRENT_PTR);
+    printf ("Reading right node. Cur = %.40s...\n", buffer->current_ptr);
 
-    node->right = read_node (level + 1);
+    node->right = read_node (level + 1, buffer);
 
     INDENT; printf ("\n" "RIGHT subtree read. Data of right root = '%s'\n", node->right->data);
 
     chr = '\0';
-    sscanf (CURRENT_PTR, " %c %n", &chr, &n);
+    sscanf (buffer->current_ptr, " %c %n", &chr, &n);
     if (n < 0) { INDENT; printf ("No ending symbol (2) found. Return NULL.\n"); return NULL; }
 
     if (chr == '}')
     {
-        CURRENT_PTR += n;
+        buffer->current_ptr += n;
 
-        INDENT; printf ("Got a '}', FULL Node END (data = '%s'). Return node. Cur = %.40s...\n", node->data, CURRENT_PTR);
+        INDENT; printf ("Got a '}', FULL Node END (data = '%s'). Return node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr);
 
         return node;
     }
 
-    INDENT; printf ("Does NOT get '}'. Syntax error. Return NULL. Cur = %.20s...\n", CURRENT_PTR);
+    INDENT; printf ("Does NOT get '}'. Syntax error. Return NULL. Cur = %.20s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr);
 
     return NULL;
 }
@@ -273,6 +276,9 @@ struct Node_t* add_info (struct Node_t* node)
     ptr_left->data = new_object;
     ptr_left->shoot_free = 1;
     ptr_right->data = node->data;
+
+    if (node->shoot_free == 1)
+        ptr_right->shoot_free = 1;
 
     char* diff_object = get_and_prepare_string ("whats the difference between %s and %s. %s is...\n",
                                                 ptr_left->data, node->data, ptr_left->data);
@@ -353,7 +359,18 @@ int delete_sub_tree (struct Node_t* node)
     if (node->shoot_free == 1)
         free (node->data);
 
+    node->shoot_free = 0;
+
     free (node);
+
+    return 0;
+}
+
+int buffer_dtor (struct Buffer_t* buffer)
+{
+    buffer->current_ptr = NULL;
+
+    free (buffer->buffer_ptr);
 
     return 0;
 }

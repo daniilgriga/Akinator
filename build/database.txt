@@ -14,7 +14,10 @@
                     { "artem" } 
                     { "middle defender" 
                         { "maxon" } 
-                        { "gosha" } 
+                        { "goalkeeper" 
+                            { "dmitri" } 
+                            { "gosha" } 
+                        } 
                     } 
                 } 
             } 
@@ -22,7 +25,16 @@
         } 
         { "coach" 
             { "valentin spivak guardiola" } 
-            { "FUPM REF" } 
+            { "lives in 209 room" 
+                { "loves kefir" 
+                    { "damir" } 
+                    { "has glasses" 
+                        { "yura" } 
+                        { "dima" } 
+                    } 
+                } 
+                { "FUPM REF" } 
+            } 
         } 
     } 
 } 

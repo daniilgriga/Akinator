@@ -12,4 +12,10 @@ struct Node_t
     int shoot_free;
 };
 
+struct Buffer_t
+{
+    char* buffer_ptr;
+    char* current_ptr;
+};
+
 #endif
