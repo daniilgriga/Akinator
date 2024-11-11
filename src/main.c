@@ -7,6 +7,7 @@
 #include <stdarg.h>
 
 #include "head.h"
+#include "log.h"
 
 struct Node_t* new_node  (char* data);
 
@@ -16,15 +17,13 @@ int print_tree_postorder (struct Node_t* root);
 
 int print_tree_inorder   (struct Node_t* root);
 
-int delete_sub_tree (struct Node_t* node);
+int delete_sub_tree      (struct Node_t* node);
 
 int buffer_dtor (struct Buffer_t* buffer);
 
 void print_tree_preorder_for_file (struct Node_t* root, FILE* filename);
 
-char* graph_dump (struct Node_t* root);
-
-FILE* open_log_file (const char* filename);
+int make_graph (struct Node_t* root);
 
 struct Node_t* akinator_game (struct Node_t* node);
 
@@ -42,9 +41,9 @@ struct Node_t* read_node (int level, struct Buffer_t* buffer);
 
 struct Node_t* read_database (FILE* filename, struct Buffer_t* buffer);
 
-int write_log_file (struct Node_t* root, const char* reason_bro/* in c++ " = doesn't_care_bro"*/);
+void dump_in_log_file (struct Node_t* node, const char* reason);
 
-FILE* LOG_FILE = NULL;
+// int write_log_file (struct Node_t* root, const char* reason_bro/* in c++ " = doesn't_care_bro"*/);
 
 int main (void)
 {
@@ -58,9 +57,10 @@ int main (void)
     printf ("GNU = %d.%d\n", __GNUC__, __GNUC_MINOR__);
 
     printf ("%ld", _POSIX_C_SOURCE);
+
     open_log_file ("../build/dump.html");
 
-    write_log_file (root, "before insert");
+    dump_in_log_file (root, "before insert");
 
     printf ("\npreorder: ");
     print_tree_preorder  (root, stdout, 0);
@@ -108,15 +108,21 @@ int main (void)
         }
     }
 
-    write_log_file (root, "end of programm");
+    dump_in_log_file (root, "end of programm");
 
-    fclose (LOG_FILE);
+    close_log_file ();
 
     delete_sub_tree (root);
 
     buffer_dtor (&buffer);
 
     return 0;
+}
+
+void dump_in_log_file (struct Node_t* node, const char* reason)
+{
+    make_graph (node);
+    write_log_file (node, reason);
 }
 
 struct Node_t* read_database (FILE* file, struct Buffer_t* buffer)
@@ -286,7 +292,7 @@ struct Node_t* add_info (struct Node_t* node)
     node->data = diff_object;
     node->shoot_free = 1;
 
-    write_log_file (node, "adding a node");
+    dump_in_log_file (node, "adding a node");
 
     return node;
 }
@@ -375,8 +381,6 @@ int buffer_dtor (struct Buffer_t* buffer)
     return 0;
 }
 
-
-
 int write_database (struct Node_t* root)
 {
     FILE* database = fopen ("database.txt", "w");
@@ -447,7 +451,7 @@ int print_tree_inorder (struct Node_t* root)
     return 0;
 }
 
-char* graph_dump (struct Node_t* root)
+int make_graph (struct Node_t* root)
 {
     assert (root);
 
@@ -455,7 +459,7 @@ char* graph_dump (struct Node_t* root)
     if (graph_file == NULL)
     {
         printf("ERROR open graph_file\n");
-        return NULL;
+        return 1;
     }
 
     fprintf (graph_file, "digraph\n{\n");
@@ -472,16 +476,7 @@ char* graph_dump (struct Node_t* root)
 
     fclose  (graph_file);
 
-    static int dump_number = 1;
-    static char filename[50] = {};
-    char    command_name[100] = {};
-
-    sprintf (filename, "../build/graph_tree%d.svg", dump_number++);
-    sprintf (command_name, "dot ../build/graph_tree.dot -Tsvg -o %s", filename);
-
-    system  (command_name);
-
-    return filename;
+    return 0;
 }
 
 void print_tree_preorder_for_file (struct Node_t* root, FILE* filename)
@@ -505,35 +500,4 @@ void print_tree_preorder_for_file (struct Node_t* root, FILE* filename)
     if (root->left)  print_tree_preorder_for_file (root->left , filename);
 
     if (root->right) print_tree_preorder_for_file (root->right, filename);
-}
-
-FILE* open_log_file (const char* filename)
-{
-    LOG_FILE = fopen (filename, "w");
-    if (LOG_FILE == NULL)
-    {
-        printf("ERROR open dump file\n");
-        return NULL;
-    }
-
-    fprintf (LOG_FILE, "<pre>\n");
-
-    return LOG_FILE;
-}
-
-int write_log_file (struct Node_t* root, const char* reason_bro)
-{
-    assert (root);
-
-    fprintf (LOG_FILE, "<body style=\"background-color: #AFEEEE\">");
-
-    fprintf (LOG_FILE, "<hr> <h2> %s </h2> <br> <hr>\n\n", reason_bro);
-
-    const char* filename = graph_dump (root);
-
-    fprintf (LOG_FILE, "\n\n<img src=\"%s\">", filename);
-
-    fflush (LOG_FILE);
-
-    return 0;
 }
