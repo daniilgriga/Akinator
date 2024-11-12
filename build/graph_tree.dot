@@ -8,11 +8,7 @@ node0x504000000010 -> node0x504000000050
 node0x504000000050 -> node0x504000000090
 ;node0x504000000050 -> node0x5040000000d0
 ;node0x504000000090 [shape=Mrecord; label = " { [0x504000000090] | data = ded32 | shoot_free = 0 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000000d0 [shape=Mrecord; label = " { [0x5040000000d0] | data = teaches in online-school | shoot_free = 1 | { left = [0x5040000006d0] | right = [0x504000000710] } }"; style = filled; fillcolor = "#FFE0E0"];
-node0x5040000000d0 -> node0x5040000006d0
-;node0x5040000000d0 -> node0x504000000710
-;node0x5040000006d0 [shape=Mrecord; label = " { [0x5040000006d0] | data = penkin | shoot_free = 1 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFE0E0"];
-node0x504000000710 [shape=Mrecord; label = " { [0x504000000710] | data = ovchinkin | shoot_free = 0 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x5040000000d0 [shape=Mrecord; label = " { [0x5040000000d0] | data = ovchinkin | shoot_free = 0 | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x504000000110 [shape=Mrecord; label = " { [0x504000000110] | data = football player | shoot_free = 0 | { left = [0x504000000150] | right = [0x504000000490] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x504000000110 -> node0x504000000150
 ;node0x504000000110 -> node0x504000000490

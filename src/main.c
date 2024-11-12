@@ -1,3 +1,5 @@
+// #define DEBUG
+
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
@@ -8,6 +10,13 @@
 
 #include "head.h"
 #include "log.h"
+#include "color_print.h"
+
+#ifdef DEBUG
+    #define ON_DBG(...) __VA_ARGS__
+#else
+    #define ON_DBG(...)
+#endif
 
 struct Node_t* new_node  (char* data);
 
@@ -52,30 +61,29 @@ int main (void)
 
     struct Node_t* root = read_database (database, &buffer);
 
-    printf ("[%p]\n", root);
-
-    printf ("GNU = %d.%d\n", __GNUC__, __GNUC_MINOR__);
-
-    printf ("%ld", _POSIX_C_SOURCE);
+    // printf ("GNU = %d.%d\n", __GNUC__, __GNUC_MINOR__);
+    // printf ("%ld", _POSIX_C_SOURCE);
 
     open_log_file ("../build/dump.html");
 
     dump_in_log_file (root, "before insert");
 
-    printf ("\npreorder: ");
-    print_tree_preorder  (root, stdout, 0);
+    // printf ("\npreorder:\n");
+    // print_tree_preorder  (root, stdout, 0);
 
-    printf ("\npostorder: ");
-    print_tree_postorder (root);
+    // printf ("\npostorder: ");
+    // print_tree_postorder (root);
 
-    printf ("\ninorder: ");
-    print_tree_inorder   (root);
-    printf ("\n");
+    // printf ("\ninorder: ");
+    //print_tree_inorder   (root);
+    //printf ("\n");
 
     int loop = 1;
     while (loop)
     {
-        printf ("what do you wanna doing?\n[a]kinator game, [q]uit and write to database, [Q]uit\n");
+        printf ("what do you wanna doing?\n");
+        printf ("[a]kinator game, [q]uit and write to database, [Q]uit\n");
+
         int answer_for_mode = getchar();
         clean_buffer ();
 
@@ -102,7 +110,7 @@ int main (void)
 
             default:
             {
-                printf ("bro....");
+                printf ("bro.... put the right mode\n");
                 break;
             }
         }
@@ -133,7 +141,7 @@ struct Node_t* read_database (FILE* file, struct Buffer_t* buffer)
 
     buffer->buffer_ptr = calloc ( (size_t) file_size + 1, sizeof(buffer->buffer_ptr[0]));
 
-    printf ("\n\n\n\nbuffer->buffer_ptr = [%p]\n\n\n\n", buffer->buffer_ptr);
+    ON_DBG ( printf ("\n\n\n\nbuffer->buffer_ptr = [%p]\n\n\n\n", buffer->buffer_ptr); )
 
     size_t count = fread (buffer->buffer_ptr, sizeof(buffer->buffer_ptr[0]), (size_t) file_size, file);
     if ((long) count != file_size)
@@ -150,16 +158,16 @@ struct Node_t* read_database (FILE* file, struct Buffer_t* buffer)
 
 struct Node_t* read_node (int level, struct Buffer_t* buffer)
 {
-    printf ("\n");
-    INDENT; printf ("Starting read_node(). Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr,  buffer->current_ptr, buffer->buffer_ptr);
+    ON_DBG ( printf ("\n"); )
+    ON_DBG ( INDENT; printf ("Starting read_node(). Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr,  buffer->current_ptr, buffer->buffer_ptr); )
 
     int n = -1;
     sscanf (buffer->current_ptr, " { %n", &n);
-    if (n < 0) { INDENT; printf ("No '{' found. Return NULL.\n"); return NULL; }
+    if (n < 0) { ON_DBG ( INDENT; printf ("No '{' found. Return NULL.\n"); ) return NULL; }
 
     buffer->current_ptr += n;
 
-    INDENT; printf ("Got an '{'. Creating a node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr,  buffer->current_ptr, buffer->buffer_ptr);
+    ON_DBG ( INDENT; printf ("Got an '{'. Creating a node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr,  buffer->current_ptr, buffer->buffer_ptr); )
 
     struct Node_t* node = new_node (NULL);
 
@@ -167,57 +175,57 @@ struct Node_t* read_node (int level, struct Buffer_t* buffer)
     int bgn = 0;
     int end = 0;
     sscanf (buffer->current_ptr, " \"%n%*[^\"]%n\" %n", &bgn, &end, &n);
-    if (n < 0) { INDENT; printf ("No DATA found. Return NULL.\n"); return NULL; }
+    if (n < 0) { ON_DBG ( INDENT; printf ("No DATA found. Return NULL.\n"); ) return NULL; }
 
     *(buffer->current_ptr + end) = '\0';
     node->data = buffer->current_ptr + bgn;
 
-    INDENT; printf ("Got a NAME: '%s'. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr);
+    ON_DBG ( INDENT; printf ("Got a NAME: '%s'. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
 
     buffer->current_ptr += n;
 
-    INDENT; printf ("Shifted CURRENT_PTR: '%s'. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr);
+    ON_DBG ( INDENT; printf ("Shifted CURRENT_PTR: '%s'. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
 
     n = -1;
     char chr = '\0';
     sscanf (buffer->current_ptr, " %c %n", &chr, &n);
-    if (n < 0) { INDENT; printf ("No ending symbol (1) found. Return NULL.\n"); return NULL; }
+    if (n < 0) { ON_DBG ( INDENT; printf ("No ending symbol (1) found. Return NULL.\n"); ) return NULL; }
 
     if (chr == '}')
     {
         buffer->current_ptr += n;
 
-        INDENT; printf ("Got a '}', SHORT Node END (data = '%s'). Return node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr);
+        ON_DBG ( INDENT; printf ("Got a '}', SHORT Node END (data = '%s'). Return node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
 
         return node;
     }
 
-    INDENT; printf ("'}' NOT found. Supposing a left/right subtree. Reading left node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr);
+    ON_DBG ( INDENT; printf ("'}' NOT found. Supposing a left/right subtree. Reading left node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
 
     node->left = read_node (level + 1, buffer);
 
-    INDENT; printf ("\n" "LEFT subtree read. Data of left root = '%s'\n\n", node->left->data);
+    ON_DBG ( INDENT; printf ("\n" "LEFT subtree read. Data of left root = '%s'\n\n", node->left->data); )
 
-    printf ("Reading right node. Cur = %.40s...\n", buffer->current_ptr);
+    ON_DBG ( printf ("Reading right node. Cur = %.40s...\n", buffer->current_ptr); )
 
     node->right = read_node (level + 1, buffer);
 
-    INDENT; printf ("\n" "RIGHT subtree read. Data of right root = '%s'\n", node->right->data);
+    ON_DBG ( INDENT; printf ("\n" "RIGHT subtree read. Data of right root = '%s'\n", node->right->data); )
 
     chr = '\0';
     sscanf (buffer->current_ptr, " %c %n", &chr, &n);
-    if (n < 0) { INDENT; printf ("No ending symbol (2) found. Return NULL.\n"); return NULL; }
+    if (n < 0) { ON_DBG ( INDENT; printf ("No ending symbol (2) found. Return NULL.\n"); ) return NULL; }
 
     if (chr == '}')
     {
         buffer->current_ptr += n;
 
-        INDENT; printf ("Got a '}', FULL Node END (data = '%s'). Return node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr);
+        ON_DBG ( INDENT; printf ("Got a '}', FULL Node END (data = '%s'). Return node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
 
         return node;
     }
 
-    INDENT; printf ("Does NOT get '}'. Syntax error. Return NULL. Cur = %.20s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr);
+    ON_DBG ( INDENT; printf ("Does NOT get '}'. Syntax error. Return NULL. Cur = %.20s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
 
     return NULL;
 }
