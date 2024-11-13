@@ -53,7 +53,7 @@ struct Node_t* read_database (FILE* filename, struct Buffer_t* buffer);
 
 void dump_in_log_file (struct Node_t* node, const char* reason);
 
-void create_definition (struct Node_t* node);
+int create_definition (struct Node_t* node);
 
 struct Node_t* find_node (const char* object, struct Node_t* node);
 
@@ -90,7 +90,7 @@ int main (void)
     int loop = 1;
     while (loop)
     {
-        printf ("what do you wanna doing?\n");
+        printf (LIGHT_BLUE_TEXT("what do you wanna doing?\n"));
         printf ("[a]kinator game, [d]efinition, [q]uit and write to database, [Q]uit\n");
 
         int answer_for_mode = getchar();
@@ -340,19 +340,19 @@ struct Node_t* akinator_game (struct Node_t* node)
         int answer = getchar();
         clean_buffer ();       //TODO - func = getchar + clean_buffer
 
-        if      (answer == 'y') node = node->left;
+        if      (answer == 'y') node = node->left; //TODO - sort users answer
         else if (answer == 'n') node = node->right;
         else printf ("it isn't 'y' or 'n' --- error.\n");
     }
 
-    printf ("Is it the RIGHT answer: \"%s\"?\n[y/n]\n", node->data);
+    printf ("Is it the "GREEN_TEXT("RIGHT answer:")" \"%s\"?\n[y/n]\n", node->data);
 
     int final_answer = getchar();
     clean_buffer ();
 
     if (final_answer == 'y')
     {
-        printf ("lol, it was so easy...\n");
+        printf ("lol, it was so easy...\n\n");
         return node;
     }
 
@@ -530,7 +530,7 @@ void print_tree_preorder_for_file (struct Node_t* root, FILE* filename)
     if (root->right) print_tree_preorder_for_file (root->right, filename);
 }
 
-void create_definition (struct Node_t* node)
+int create_definition (struct Node_t* node)
 {
     char* object = NULL;
     size_t size_max = 0;
@@ -538,26 +538,35 @@ void create_definition (struct Node_t* node)
     printf ("enter the object: ");
     getline (&object, &size_max, stdin);
 
-    size_t size = strlen (object);
+    size_t size = strlen (object); //FIXME - input processing
     assert (size); //FIXME -
 
     if (object[size - 1] == '\n')
         object[size - 1] =  '\0';
 
-    fprintf (stderr, "%s\n", object);
+    ON_DEBUG ( fprintf (stderr, "%s\n", object); )
 
     struct Node_t* our_node = find_node (object, node); //FIXME - check NULL pointers
-    fprintf (stderr, "our_node = [%p]  our_node->data = %s\n", our_node, our_node->data);
-    //if (our_node == NULL)
+    if (our_node == NULL)
+    {
+        printf ("\n" "'%s' -- no such node exists, "GREEN_TEXT("try another one")" or "GREEN_TEXT("add your own object.") "\n\n", object);
+        free (object);
+        return 1;
+    }
+
+    ON_DEBUG ( fprintf (stderr, "our_node = [%p]  our_node->data = %s\n", our_node, our_node->data); )
+
     our_node->data = object;
     our_node->shoot_free = 1;
 
-    fprintf (stderr, "object = %s, our_node->data = %s   \n", object, our_node->data);
+    ON_DEBUG ( fprintf (stderr, "object = %s, our_node->data = %s   \n", object, our_node->data); )
 
     struct stack_str stack = {};
     stack_ctor (&stack, 10);
 
     print_definition (our_node, &stack);
+
+    return 0;
 }
 
 struct Node_t* find_node (const char* object, struct Node_t* node)

@@ -21,8 +21,8 @@ node0x504000000190 -> node0x5040000001d0
 ;node0x5040000001d0 [shape=Mrecord; label = " { ADDR = [0x5040000001d0] | data = left defender | shoot_free = 0 | parent = [0x504000000190] | { left = [0x504000000210] | right = [0x504000000250] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x5040000001d0 -> node0x504000000210
 ;node0x5040000001d0 -> node0x504000000250
-;node0x504000000210 [shape=Mrecord; label = " { ADDR = [0x504000000210] | data = tolik | shoot_free = 0 | parent = [0x5040000001d0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000250 [shape=Mrecord; label = " { ADDR = [0x504000000250] | data = dan | shoot_free = 1 | parent = [0x5040000001d0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFE0E0"];
+;node0x504000000210 [shape=Mrecord; label = " { ADDR = [0x504000000210] | data = tolik | shoot_free = 1 | parent = [0x5040000001d0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFE0E0"];
+node0x504000000250 [shape=Mrecord; label = " { ADDR = [0x504000000250] | data = dan | shoot_free = 0 | parent = [0x5040000001d0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x504000000290 [shape=Mrecord; label = " { ADDR = [0x504000000290] | data = center forward | shoot_free = 0 | parent = [0x504000000190] | { left = [0x5040000002d0] | right = [0x504000000310] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x504000000290 -> node0x5040000002d0
 ;node0x504000000290 -> node0x504000000310
