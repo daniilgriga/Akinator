@@ -13,7 +13,7 @@ const stack_elem_t STACK_POISON_ELEM = NULL;
 const double CANARY_VALUE        = (0xBAD);
 const double CANARY_BUFFER_VALUE = (0xEDA);
 
-enum StackCondition stack_ctor (struct stack_str* stack, int capacity ON_DBG(, const char* file, int line, const char* func))
+enum StackCondition stack_ctor (struct stack_t* stack, int capacity ON_DBG(, const char* file, int line, const char* func))
 {
     assert(stack);
 
@@ -45,7 +45,7 @@ enum StackCondition stack_ctor (struct stack_str* stack, int capacity ON_DBG(, c
     return STACK_IS_OK;
 }
 
-int stack_dtor (struct stack_str* stack)
+int stack_dtor (struct stack_t* stack)
 {
     for (int i = 0; i < stack->capacity; i++)
         stack->data[i] = STACK_POISON_ELEM;
@@ -59,7 +59,7 @@ int stack_dtor (struct stack_str* stack)
     return 0;
 }
 
-int increasing_capacity (struct stack_str* stack ON_DBG(, const char* file, int line, const char* func))
+int increasing_capacity (struct stack_t* stack ON_DBG(, const char* file, int line, const char* func))
 {
     if (stack->size >= stack->capacity)
     {
@@ -80,7 +80,7 @@ int increasing_capacity (struct stack_str* stack ON_DBG(, const char* file, int 
     return 0;
 }
 
-int stack_push (struct stack_str* stack, stack_elem_t elem ON_DBG(, const char* file, int line, const char* func))
+int stack_push (struct stack_t* stack, stack_elem_t elem ON_DBG(, const char* file, int line, const char* func))
 {
     STACK_ASSERT(stack, file, line, func);
 
@@ -95,7 +95,7 @@ int stack_push (struct stack_str* stack, stack_elem_t elem ON_DBG(, const char* 
     return 0;
 }
 
-ON_HASH ( int calculate_hash (struct stack_str* stack)
+ON_HASH ( int calculate_hash (struct stack_t* stack)
 {
     stack->hash_b  = hash_djb2((const char*)(stack->data ON_CNR_PRTCT(- 1)), (size_t)stack->capacity * sizeof (stack->data[0]));
     stack->hash_st = 0;
@@ -104,7 +104,7 @@ ON_HASH ( int calculate_hash (struct stack_str* stack)
     return 0;
 } )
 
-int stack_pop (struct stack_str* stack, stack_elem_t* x ON_DBG(, const char* file, int line, const char* func))
+int stack_pop (struct stack_t* stack, stack_elem_t* x ON_DBG(, const char* file, int line, const char* func))
 {
     ON_DBG ( STACK_ASSERT(stack, file, line, func); )
 
@@ -119,9 +119,9 @@ int stack_pop (struct stack_str* stack, stack_elem_t* x ON_DBG(, const char* fil
     return 0;
 }
 
-int stack_dump (struct stack_str* stack, const char* file, int line, const char* func)
+int stack_dump (struct stack_t* stack, const char* file, int line, const char* func)
 {
-    printf(PURPLE_TEXT("\nstack_str [%p] called from %s, name \"%s\" born at %s:%d:\n"), stack, file, "stack", func, line);
+    printf(PURPLE_TEXT("\nstack_t [%p] called from %s, name \"%s\" born at %s:%d:\n"), stack, file, "stack", func, line);
 
     if (stack == NULL)
     {
@@ -156,7 +156,7 @@ int stack_dump (struct stack_str* stack, const char* file, int line, const char*
     return 0;
 }
 
-int stack_error (struct stack_str* stack)
+int stack_error (struct stack_t* stack)
 {
     int stack_err = 0;
 
@@ -262,7 +262,7 @@ int convert_to_binary_upd (unsigned n)
     return 0;
 }
 
-stack_elem_t stack_look (struct stack_str* stack, int n)
+stack_elem_t stack_look (struct stack_t* stack, int n)
 {
     if (!(0 <= n && n < stack->size))
         return NULL;
@@ -270,7 +270,7 @@ stack_elem_t stack_look (struct stack_str* stack, int n)
     return stack->data[n];
 }
 
-int stack_assert (struct stack_str* stack, const char* file, int line, const char* func)
+int stack_assert (struct stack_t* stack, const char* file, int line, const char* func)
 {
     if (!stack_error(stack))
         return 0;

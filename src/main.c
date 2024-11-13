@@ -1,4 +1,4 @@
-//#define DEBUG_AKINATOR
+// #define DEBUG_AKINATOR
 
 #include <stdio.h>
 #include <assert.h>
@@ -43,7 +43,7 @@ struct Node_t* add_info (struct Node_t* node);
 
 void clean_buffer(void);
 
-char* get_and_prepare_string (const char* question, ...);
+char* get_and_prepare_string (const char* question, ...) __attribute__((format(printf, 1, 2)));
 
 int write_database (struct Node_t* root);
 
@@ -57,13 +57,19 @@ int create_definition (struct Node_t* node);
 
 struct Node_t* find_node (const char* object, struct Node_t* node);
 
-void print_definition (struct Node_t* node, struct stack_str* stack);
+void print_definition (struct Node_t* node, struct stack_t* stack);
+
+void print_comparison (struct Node_t* node_1, struct Node_t* node_2, struct stack_t* stack_1, struct stack_t* stack_2);
+
+int create_comparison (struct Node_t* node);
+
+void help_print_definition (struct stack_t* stack);
 
 // int write_log_file (struct Node_t* root, const char* reason_bro/* in c++ " = doesn't_care_bro"*/);
 
 int main (void)
 {
-    FILE* database = fopen ("database.txt", "r");
+    FILE* database = fopen ("database.txt", "rb");
     struct Buffer_t buffer = {};
 
     struct Node_t* root = read_database (database, &buffer);
@@ -90,8 +96,10 @@ int main (void)
     int loop = 1;
     while (loop)
     {
-        printf (LIGHT_BLUE_TEXT("what do you wanna doing?\n"));
-        printf ("[a]kinator game, [d]efinition, [q]uit and write to database, [Q]uit\n");
+        printf (LIGHT_BLUE_TEXT("\nwhat do you wanna doing?\n"));
+        printf (BLUE_TEXT("[a]")LIGHT_BLUE_TEXT("kinator game, ")BLUE_TEXT("[d]")LIGHT_BLUE_TEXT("efinition, ")
+                BLUE_TEXT("[c]")LIGHT_BLUE_TEXT("omparison, ")
+                BLUE_TEXT("[q]")LIGHT_BLUE_TEXT("uit and write to database, ")BLUE_TEXT("[Q]")LIGHT_BLUE_TEXT("uit\n"));
 
         int answer_for_mode = getchar();
         clean_buffer ();
@@ -109,6 +117,10 @@ int main (void)
                 create_definition (root);
                 break;
             }
+
+            case 'c':
+                create_comparison (root);
+                break;
 
             case 'q':
             {
@@ -142,7 +154,7 @@ int main (void)
     return 0;
 }
 
-void dump_in_log_file (struct Node_t* node, const char* reason)
+void dump_in_log_file (struct Node_t* node, const char* reason) // FIXME asserts in all functions
 {
     make_graph (node);
     write_log_file (node, reason);
@@ -173,8 +185,11 @@ struct Node_t* read_database (FILE* file, struct Buffer_t* buffer)
 
 struct Node_t* read_node (int level, struct Buffer_t* buffer, struct Node_t* parent)
 {
+    assert(level == 0 ? parent == NULL : parent != NULL);
+
     ON_DEBUG ( printf ("\n"); )
-    ON_DEBUG ( INDENT; printf ("Starting read_node(). Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr,  buffer->current_ptr, buffer->buffer_ptr); )
+    ON_DEBUG ( INDENT; printf ("Starting read_node(). Cur = %.40s..., [%p]. buffer_ptr = [%p]\n",
+               buffer->current_ptr,  buffer->current_ptr, buffer->buffer_ptr); )
 
     int n = -1;
     sscanf (buffer->current_ptr, " { %n", &n);
@@ -182,14 +197,12 @@ struct Node_t* read_node (int level, struct Buffer_t* buffer, struct Node_t* par
 
     buffer->current_ptr += n;
 
-    ON_DEBUG ( INDENT; printf ("Got an '{'. Creating a node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr,  buffer->current_ptr, buffer->buffer_ptr); )
+    ON_DEBUG ( INDENT; printf ("Got an '{'. Creating a node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n",
+               buffer->current_ptr,  buffer->current_ptr, buffer->buffer_ptr); )
 
     struct Node_t* node = {};
 
-    if (level == 0)
-        node = new_node (NULL, NULL);
-    else
-        node = new_node (NULL, parent);
+    node = new_node (NULL, parent);
 
     n = -1;
     int bgn = 0;
@@ -200,11 +213,13 @@ struct Node_t* read_node (int level, struct Buffer_t* buffer, struct Node_t* par
     *(buffer->current_ptr + end) = '\0';
     node->data = buffer->current_ptr + bgn;
 
-    ON_DEBUG ( INDENT; printf ("Got a NAME: '%s'. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
+    ON_DEBUG ( INDENT; printf ("Got a NAME: '%s'. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n",
+               node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
 
     buffer->current_ptr += n;
 
-    ON_DEBUG ( INDENT; printf ("Shifted CURRENT_PTR: '%s'. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
+    ON_DEBUG ( INDENT; printf ("Shifted CURRENT_PTR: '%s'. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n",
+               node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
 
     n = -1;
     char chr = '\0';
@@ -215,12 +230,14 @@ struct Node_t* read_node (int level, struct Buffer_t* buffer, struct Node_t* par
     {
         buffer->current_ptr += n;
 
-        ON_DEBUG ( INDENT; printf ("Got a '}', SHORT Node END (data = '%s'). Return node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
+        ON_DEBUG ( INDENT; printf ("Got a '}', SHORT Node END (data = '%s'). Return node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n",
+                   node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
 
         return node;
     }
 
-    ON_DEBUG ( INDENT; printf ("'}' NOT found. Supposing a left/right subtree. Reading left node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
+    ON_DEBUG ( INDENT; printf ("'}' NOT found. Supposing a left/right subtree. Reading left node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n",
+               buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
 
     node->left = read_node (level + 1, buffer, node);
 
@@ -240,12 +257,14 @@ struct Node_t* read_node (int level, struct Buffer_t* buffer, struct Node_t* par
     {
         buffer->current_ptr += n;
 
-        ON_DEBUG ( INDENT; printf ("Got a '}', FULL Node END (data = '%s'). Return node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n", node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
+        ON_DEBUG ( INDENT; printf ("Got a '}', FULL Node END (data = '%s'). Return node. Cur = %.40s..., [%p]. buffer_ptr = [%p]\n",
+                   node->data, buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
 
         return node;
     }
 
-    ON_DEBUG ( INDENT; printf ("Does NOT get '}'. Syntax error. Return NULL. Cur = %.20s..., [%p]. buffer_ptr = [%p]\n", buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
+    ON_DEBUG ( INDENT; printf ("Does NOT get '}'. Syntax error. Return NULL. Cur = %.20s..., [%p]. buffer_ptr = [%p]\n",
+               buffer->current_ptr, buffer->current_ptr, buffer->buffer_ptr); )
 
     return NULL;
 }
@@ -272,7 +291,7 @@ struct Node_t* new_node (char* data, struct Node_t* parent)
 
 char* get_and_prepare_string (const char* question, ...)
 {
-    va_list args;
+    va_list args = {};
     va_start (args, question);
 
     vprintf (question, args);
@@ -305,7 +324,7 @@ struct Node_t* add_info (struct Node_t* node)
     node->left  = ptr_left;
     node->right = ptr_right;
 
-    char* new_object  = get_and_prepare_string ("who tf is this?\n");
+    char* new_object  = get_and_prepare_string (LIGHT_BLUE_TEXT("who tf is this?")"\n");
 
     ptr_left->data = new_object;
     ptr_left->shoot_free = 1;
@@ -314,7 +333,9 @@ struct Node_t* add_info (struct Node_t* node)
     if (node->shoot_free == 1)
         ptr_right->shoot_free = 1;
 
-    char* diff_object = get_and_prepare_string ("whats the difference between %s and %s. %s is...\n",
+    char* diff_object = get_and_prepare_string (LIGHT_BLUE_TEXT("whats the difference between ")
+                                                GREEN_TEXT("%s")LIGHT_BLUE_TEXT(" and ")GREEN_TEXT("%s.s")
+                                                GREEN_TEXT(" %s ")LIGHT_BLUE_TEXT("is...")"\n",
                                                 ptr_left->data, node->data, ptr_left->data);
 
     node->data = diff_object;
@@ -334,25 +355,25 @@ struct Node_t* akinator_game (struct Node_t* node)
 {
     while (node && node->left && node->right)
     {
-        printf ("\"%s\"?\n", node->data);
-        printf ("[y/n]\n");
+        printf (LIGHT_BLUE_TEXT("\"%s\"?")"\n", node->data);
+        printf (BLUE_TEXT("[y/n]")"\n");
 
         int answer = getchar();
         clean_buffer ();       //TODO - func = getchar + clean_buffer
 
-        if      (answer == 'y') node = node->left; //TODO - sort users answer
+        if      (answer == 'y') node = node->left;
         else if (answer == 'n') node = node->right;
-        else printf ("it isn't 'y' or 'n' --- error.\n");
+        else printf (RED_TEXT("it isn't 'y' or 'n' --- error.")"\n");
     }
 
-    printf ("Is it the "GREEN_TEXT("RIGHT answer:")" \"%s\"?\n[y/n]\n", node->data);
+    printf (LIGHT_BLUE_TEXT("Is it the ")GREEN_TEXT("RIGHT answer:")LIGHT_BLUE_TEXT(" \"%s\"?\n")BLUE_TEXT("[y/n]")"\n", node->data);
 
     int final_answer = getchar();
     clean_buffer ();
 
     if (final_answer == 'y')
     {
-        printf ("lol, it was so easy...\n\n");
+        printf ("\n"GREEN_TEXT("lol, it was so easy...")"\n\n");
         return node;
     }
 
@@ -411,7 +432,7 @@ int buffer_dtor (struct Buffer_t* buffer)
 
 int write_database (struct Node_t* root)
 {
-    FILE* database = fopen ("database.txt", "w");
+    FILE* database = fopen ("database.txt", "wb");
 
     assert (database); //FIXME
 
@@ -513,11 +534,11 @@ void print_tree_preorder_for_file (struct Node_t* root, FILE* filename)
         return ; //FIXME
 
     if (root->shoot_free == 0)
-        fprintf (filename, "node%p [shape=Mrecord; label = \" { ADDR = [%p] | data = %3s | shoot_free = %d | parent = [%p] | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFFFD0\"];\n",
-             root, root, root->data, root->shoot_free, root->parent, root->left, root->right);
+        fprintf (filename, "node%p [shape=Mrecord; label = \" { ADDR = [%p] | data [%p] = %3s | shoot_free = %d | parent = [%p] | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFFFD0\"];\n",
+             root, root, root->data, root->data, root->shoot_free, root->parent, root->left, root->right);
     else
-        fprintf (filename, "node%p [shape=Mrecord; label = \" { ADDR = [%p] | data = %3s | shoot_free = %d | parent = [%p] | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFE0E0\"];\n",
-             root, root, root->data, root->shoot_free, root->parent, root->left, root->right);
+        fprintf (filename, "node%p [shape=Mrecord; label = \" { ADDR = [%p] | data [%p] = %3s | shoot_free = %d | parent = [%p] | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFE0E0\"];\n",
+             root, root, root->data, root->data, root->shoot_free, root->parent, root->left, root->right);
 
     if (root->left)
         fprintf (filename, "node%p -> node%p\n;", root, root->left);
@@ -546,7 +567,7 @@ int create_definition (struct Node_t* node)
 
     ON_DEBUG ( fprintf (stderr, "%s\n", object); )
 
-    struct Node_t* our_node = find_node (object, node); //FIXME - check NULL pointers
+    struct Node_t* our_node = find_node (object, node);
     if (our_node == NULL)
     {
         printf ("\n" "'%s' -- no such node exists, "GREEN_TEXT("try another one")" or "GREEN_TEXT("add your own object.") "\n\n", object);
@@ -561,8 +582,10 @@ int create_definition (struct Node_t* node)
 
     ON_DEBUG ( fprintf (stderr, "object = %s, our_node->data = %s   \n", object, our_node->data); )
 
-    struct stack_str stack = {};
+    struct stack_t stack = {};
     stack_ctor (&stack, 10);
+
+    fprintf (stderr, "\n\n"PURPLE_TEXT("DEFINITION: ")YELLOW_TEXT("%s is "), our_node->data);
 
     print_definition (our_node, &stack);
 
@@ -597,10 +620,8 @@ struct Node_t* find_node (const char* object, struct Node_t* node)
     return NULL;
 }
 
-void print_definition (struct Node_t* node, struct stack_str* stack)
+void print_definition (struct Node_t* node, struct stack_t* stack)
 {
-    fprintf (stderr, "\n\nDEFINITION: "YELLOW_TEXT("%s is "), node->data);
-
     while (true)
     {
         stack_push (stack, node);
@@ -613,37 +634,42 @@ void print_definition (struct Node_t* node, struct stack_str* stack)
 
     stack_push (stack, node);
 
+    help_print_definition (stack);
+}
+
+void help_print_definition (struct stack_t* stack) //FIXME - rename
+{
     int i = stack->size - 1;
 
     while (true)
     {
         ON_DEBUG ( stack_dump (stack, __FILE__, __LINE__, __FUNCTION__); )
 
-        struct Node_t* node_n   = stack_look (stack, i); //FIXME - check NULL pointers
+        struct Node_t* node_curr   = stack_look (stack, i); //FIXME - check NULL pointers
 
         ON_DEBUG ( fprintf (stderr, "i = %d\n", i);
                    stack_dump (stack, __FILE__, __LINE__, __FUNCTION__);
-                   fprintf (stderr, "\nnode_n = [%p]\n", node_n);
-                   fprintf (stderr, "node_n->right = [%p]\n", node_n->right); )
+                   fprintf (stderr, "\nnode_curr = [%p]\n", node_curr);
+                   fprintf (stderr, "node_curr->right = [%p]\n", node_curr->right); )
 
-        struct Node_t* node_n_1 = stack_look (stack, i - 1); //FIXME - check NULL pointers
+        struct Node_t* node_prev = stack_look (stack, i - 1); //FIXME - check NULL pointers
 
         ON_DEBUG ( fprintf (stderr, "i = %d\n", i);
                    stack_dump (stack, __FILE__, __LINE__, __FUNCTION__);
-                   fprintf (stderr, "node_n_1 = [%p]\n",  node_n_1);
-                   fprintf (stderr, "node_n_1->right = [%p]\n", node_n_1->right); )
+                   fprintf (stderr, "node_prev = [%p]\n",  node_prev);
+                   fprintf (stderr, "node_prev->right = [%p]\n", node_prev->right); )
 
         ON_DEBUG ( stack_dump (stack, __FILE__, __LINE__, __FUNCTION__);
 
-                   fprintf (stderr, "<<< i = %d >>> if (node_n->right = [%p, %s] =="
-                                                       "node_n_1      = [%p, %s] \n\n",
-                                                     i, node_n->right, node_n->data,
-                                                        node_n_1,      node_n_1->data); )
+                   fprintf (stderr, "<<< i = %d >>> if (node_curr->right = [%p, %s] =="
+                                                       "node_prev      = [%p, %s] \n\n",
+                                                     i, node_curr->right, node_curr->data,
+                                                        node_prev,      node_prev->data); )
 
-        if (node_n->right == node_n_1)
+        if (node_curr->right == node_prev)
             fprintf (stderr, YELLOW_TEXT("not a "));
 
-        fprintf (stderr, YELLOW_TEXT("%s%c "), node_n->data, (i != 1) ? ',' : '.');
+        fprintf (stderr, YELLOW_TEXT("%s%c "), node_curr->data, (i != 1) ? ',' : '.');
 
         if (--i == 0)
             break;
@@ -652,4 +678,148 @@ void print_definition (struct Node_t* node, struct stack_str* stack)
     fprintf (stderr, "\n\n");
 
     stack_dtor (stack);
+}
+
+int create_comparison (struct Node_t* node)
+{
+    char* object_1 = NULL;
+    char* object_2 = NULL;
+    size_t size_max = 0;
+
+    printf (LIGHT_BLUE_TEXT("enter the first object: "));
+    getline (&object_1, &size_max, stdin);
+
+    size_t size_1 = strlen (object_1); //FIXME - input processing
+    assert (size_1); //FIXME
+
+    if (object_1[size_1 - 1] == '\n')
+        object_1[size_1 - 1] =  '\0';
+
+    struct Node_t* node_1 = find_node (object_1, node);
+    if (node_1 == NULL)
+    {
+        printf ("\n" "'%s' -- no such node exists, "GREEN_TEXT("try another one")" or "GREEN_TEXT("add your own object.") "\n\n", object_1);
+        free (object_1);
+        return 1;
+    }
+
+    printf (LIGHT_BLUE_TEXT("enter the second object: "));
+    getline (&object_2, &size_max, stdin);
+
+    size_t size_2 = strlen (object_2); //FIXME - input processing
+    assert (size_2);
+
+    if (object_2[size_2 - 1] == '\n')
+        object_2[size_2 - 1] =  '\0';
+
+    struct Node_t* node_2 = find_node (object_2, node);
+    if (node_2 == NULL)
+    {
+        printf ("\n" "'%s' -- no such node exists, "GREEN_TEXT("try another one")" or "GREEN_TEXT("add your own object.") "\n\n", object_2);
+        free (object_2);
+        return 1;
+    }
+
+    struct stack_t stack_1 = {}; stack_ctor (&stack_1, 10);
+    struct stack_t stack_2 = {}; stack_ctor (&stack_2, 10);
+
+    print_comparison (node_1, node_2, &stack_1, &stack_2);
+
+
+    free (object_1);
+    free (object_2);
+
+    return 0;
+}
+
+void print_comparison (struct Node_t* node_1, struct Node_t* node_2, struct stack_t* stack_1, struct stack_t* stack_2)
+{
+    assert (node_1  && "node_1 is NULL");
+    assert (node_2  && "node_2 is NULL");
+    assert (stack_1 && "stack_1 is NULL");
+    assert (stack_2 && "stack_2 is NULL");
+
+    fprintf (stderr, "\n\n"GREEN_TEXT("%s")PURPLE_TEXT(" and ")GREEN_TEXT("%s")PURPLE_TEXT(" are ")PURPLE_TEXT("SIMILAR in that: "),
+             node_1->data, node_2->data);
+
+    struct Node_t* node_1_old = node_1;
+    struct Node_t* node_2_old = node_2;
+
+    while (true)
+    {
+        stack_push (stack_1, node_1);
+
+        node_1 = node_1->parent;
+
+        if (node_1->parent == NULL)
+            break;
+    }
+
+    stack_push (stack_1, node_1);
+
+
+    while (true)
+    {
+        stack_push (stack_2, node_2);
+
+        node_2 = node_2->parent;
+
+        if (node_2->parent == NULL)
+            break;
+    }
+
+    stack_push (stack_2, node_2);
+
+    int min_stack_size = (stack_1->size < stack_2->size) ? (stack_1->size - 1) : (stack_2->size - 1);
+    int size_1 = stack_1->size - 1;
+    int size_2 = stack_2->size - 1;
+
+    struct Node_t* node_1_curr = {};
+    struct Node_t* node_1_prev = {};
+    struct Node_t* node_2_curr = {};
+    struct Node_t* node_2_prev = {};
+
+    while (true)
+    {
+        node_1_curr = stack_look (stack_1, size_1);
+        node_1_prev = stack_look (stack_1, size_1 - 1);
+        node_2_curr = stack_look (stack_2, size_2);
+        node_2_prev = stack_look (stack_2, size_2 - 1);
+
+                  // stack_dump (stack_1, __FILE__, __LINE__, __FUNCTION__);
+                  // stack_dump (stack_2, __FILE__, __LINE__, __FUNCTION__);
+
+        if ((stack_1->data[size_1] == stack_2->data[size_2]) && (node_1_prev == node_2_prev))
+        {
+            if (node_1_curr->right == node_1_prev && node_2_curr->right == node_2_prev)
+                fprintf (stderr, YELLOW_TEXT("not a "));
+
+            stack_elem_t x = NULL;
+            stack_pop (stack_1, &x);
+            stack_pop (stack_2, &x);
+
+            fprintf (stderr, YELLOW_TEXT("%s; "), node_1_curr->data);
+            --size_1;
+            --size_2;
+            --min_stack_size;
+        }
+        else
+        {
+            break;
+        }
+    }
+
+
+    fprintf (stderr, "\n\n"PURPLE_TEXT("DIFFERENT: "));
+    fprintf (stderr, GREEN_TEXT("%s")YELLOW_TEXT(" is "), node_1_old->data);
+
+    help_print_definition (stack_1); // curr, old stacks
+
+    fprintf (stderr, "\n"PURPLE_TEXT("DIFFERENT: "));
+
+    fprintf (stderr, GREEN_TEXT("%s")YELLOW_TEXT(" is "), node_2_old->data);
+    help_print_definition (stack_2);
+
+    stack_dtor (stack_1);
+    stack_dtor (stack_2);
 }
