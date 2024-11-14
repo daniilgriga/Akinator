@@ -1,7 +1,19 @@
 { "teacher"
     { "teacher of programming"
-        { "ded32" }
-        { "ovchinkin" }
+        { "Ded32" }
+        { "physics seminarist"
+            { "Lilienberg" }
+            { "physics lector"
+                { "Ovchinkin" }
+                { "maths lector"
+                    { "Znamenskaya" }
+                    { "maths seminarist"
+                        { "Karzhemanov" }
+                        { "unknown person" }
+                    }
+                }
+            }
+        }
     }
     { "football player"
         { "plays for the caRTel"
@@ -32,7 +44,7 @@
                         { "yura" }
                         { "dima" }
                     }
-		}
+                }
                 { "FUPM REF" }
             }
         }

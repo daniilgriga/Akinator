@@ -156,12 +156,18 @@ int main (void)
 
 void dump_in_log_file (struct Node_t* node, const char* reason) // FIXME asserts in all functions
 {
+    assert (node   &&  "node is NULL in dump_in_log_file()\n");
+    assert (reason && "char* is NULL in dump_in_log_file()\n");
+
     make_graph (node);
     write_log_file (node, reason);
 }
 
 struct Node_t* read_database (FILE* file, struct Buffer_t* buffer)
 {
+    assert (file   && "FILE* is NULL\n");
+    assert (buffer && "buffer is NULL\n");
+
     struct stat st = {};
     fstat (fileno (file), &st);
     long file_size = st.st_size;
@@ -185,7 +191,9 @@ struct Node_t* read_database (FILE* file, struct Buffer_t* buffer)
 
 struct Node_t* read_node (int level, struct Buffer_t* buffer, struct Node_t* parent)
 {
-    assert(level == 0 ? parent == NULL : parent != NULL);
+    assert (buffer && "buffer is NULL in read_node()\n");
+    //assert (parent && "parent is NULL in read_node()\n");
+    assert (level == 0 ? parent == NULL : parent != NULL);
 
     ON_DEBUG ( printf ("\n"); )
     ON_DEBUG ( INDENT; printf ("Starting read_node(). Cur = %.40s..., [%p]. buffer_ptr = [%p]\n",
@@ -271,6 +279,9 @@ struct Node_t* read_node (int level, struct Buffer_t* buffer, struct Node_t* par
 
 struct Node_t* new_node (char* data, struct Node_t* parent)
 {
+    //assert (data   &&   "data is NULL in new_node()\n");
+    //assert (parent && "parent is NULL in new_node()\n");
+
     struct Node_t* node = (struct Node_t*) calloc (1, sizeof(*node));
     assert (node); //FIXME - check NULL pointers
 
@@ -291,6 +302,8 @@ struct Node_t* new_node (char* data, struct Node_t* parent)
 
 char* get_and_prepare_string (const char* question, ...)
 {
+    assert (question && "char* is NULL in get_and_prepare_string()\n");
+
     va_list args = {};
     va_start (args, question);
 
@@ -318,6 +331,8 @@ char* get_and_prepare_string (const char* question, ...)
 
 struct Node_t* add_info (struct Node_t* node)
 {
+    assert (node && "node is NULL in add_info()\n");
+
     struct Node_t* ptr_left  = new_node ("0", node); //FIXME - check NULL pointers
     struct Node_t* ptr_right = new_node ("0", node);
 
@@ -334,7 +349,7 @@ struct Node_t* add_info (struct Node_t* node)
         ptr_right->shoot_free = 1;
 
     char* diff_object = get_and_prepare_string (LIGHT_BLUE_TEXT("whats the difference between ")
-                                                GREEN_TEXT("%s")LIGHT_BLUE_TEXT(" and ")GREEN_TEXT("%s.s")
+                                                GREEN_TEXT("%s")LIGHT_BLUE_TEXT(" and ")GREEN_TEXT("%s.")
                                                 GREEN_TEXT(" %s ")LIGHT_BLUE_TEXT("is...")"\n",
                                                 ptr_left->data, node->data, ptr_left->data);
 
@@ -353,6 +368,8 @@ void clean_buffer(void)
 
 struct Node_t* akinator_game (struct Node_t* node)
 {
+    assert (node && "node is NULL in akinator_game()\n");
+
     while (node && node->left && node->right)
     {
         printf (LIGHT_BLUE_TEXT("\"%s\"?")"\n", node->data);
@@ -366,7 +383,7 @@ struct Node_t* akinator_game (struct Node_t* node)
         else printf (RED_TEXT("it isn't 'y' or 'n' --- error.")"\n");
     }
 
-    printf (LIGHT_BLUE_TEXT("Is it the ")GREEN_TEXT("RIGHT answer:")LIGHT_BLUE_TEXT(" \"%s\"?\n")BLUE_TEXT("[y/n]")"\n", node->data);
+    printf (LIGHT_BLUE_TEXT("Is it the ")GREEN_TEXT("RIGHT ANSWER:")LIGHT_BLUE_TEXT(" \"%s\"?\n")BLUE_TEXT("[y/n]")"\n", node->data);
 
     int final_answer = getchar();
     clean_buffer ();
@@ -384,6 +401,8 @@ struct Node_t* akinator_game (struct Node_t* node)
 
 struct Node_t* iterativly_insert (struct Node_t* node, char* data)
 {
+    assert (node && "node is NULL in iterativly_insert()\n");
+
     while (true)
     {
         if (data < node->data)
@@ -405,6 +424,8 @@ struct Node_t* iterativly_insert (struct Node_t* node, char* data)
 
 int delete_sub_tree (struct Node_t* node)
 {
+    assert (node && "node is NULL in delete_sub_tree()\n");
+
     node->parent = NULL;
 
     if (node->left)  delete_sub_tree (node->left);
@@ -423,6 +444,8 @@ int delete_sub_tree (struct Node_t* node)
 
 int buffer_dtor (struct Buffer_t* buffer)
 {
+    assert (buffer && "buffer is NULL in buffer_dtor()\n");
+
     buffer->current_ptr = NULL;
 
     free (buffer->buffer_ptr);
@@ -432,6 +455,8 @@ int buffer_dtor (struct Buffer_t* buffer)
 
 int write_database (struct Node_t* root)
 {
+    assert (root && "root is NULL in write_database()\n");
+
     FILE* database = fopen ("database.txt", "wb");
 
     assert (database); //FIXME
@@ -556,7 +581,7 @@ int create_definition (struct Node_t* node)
     char* object = NULL;
     size_t size_max = 0;
 
-    printf ("enter the object: ");
+    printf (LIGHT_BLUE_TEXT("enter the object: "));
     getline (&object, &size_max, stdin);
 
     size_t size = strlen (object); //FIXME - input processing
@@ -577,9 +602,6 @@ int create_definition (struct Node_t* node)
 
     ON_DEBUG ( fprintf (stderr, "our_node = [%p]  our_node->data = %s\n", our_node, our_node->data); )
 
-    our_node->data = object;
-    our_node->shoot_free = 1;
-
     ON_DEBUG ( fprintf (stderr, "object = %s, our_node->data = %s   \n", object, our_node->data); )
 
     struct stack_t stack = {};
@@ -588,6 +610,8 @@ int create_definition (struct Node_t* node)
     fprintf (stderr, "\n\n"PURPLE_TEXT("DEFINITION: ")YELLOW_TEXT("%s is "), our_node->data);
 
     print_definition (our_node, &stack);
+
+    free (object);
 
     return 0;
 }
