@@ -678,6 +678,9 @@ struct Node_t* find_node (const char* object, struct Node_t* node)
 
 void print_definition (struct Node_t* node, struct stack_t* stack)
 {
+    assert (node);
+    assert (stack);
+
     while (true)
     {
         stack_push (stack, node);
@@ -695,6 +698,8 @@ void print_definition (struct Node_t* node, struct stack_t* stack)
 
 void do_print_definition (struct stack_t* stack) //FIXME - rename
 {
+    assert (stack);
+
     int i = stack->size - 1;
 
     while (true)
@@ -736,6 +741,8 @@ void do_print_definition (struct stack_t* stack) //FIXME - rename
 
 int create_comparison (struct Node_t* node)
 {
+    assert (node);
+
     char* object_1 = NULL;
     char* object_2 = NULL;
     size_t size_max = 0;

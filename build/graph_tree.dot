@@ -24,7 +24,11 @@ node0x504000000250 [shape=Mrecord; label = " { ADDR = [0x504000000250] | data [0
 node0x504000000250 -> node0x504000000290
 ;node0x504000000250 -> node0x5040000002d0
 ;node0x504000000290 [shape=Mrecord; label = " { ADDR = [0x504000000290] | data [0x51a0000001c5] = Karzhemanov | shoot_free = 0 | parent = [0x504000000250] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000002d0 [shape=Mrecord; label = " { ADDR = [0x5040000002d0] | data [0x51a0000001ef] = unknown person | shoot_free = 0 | parent = [0x504000000250] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x5040000002d0 [shape=Mrecord; label = " { ADDR = [0x5040000002d0] | data [0x503000000040] = discrete analysises semi | shoot_free = 1 | parent = [0x504000000250] | { left = [0x5040000008d0] | right = [0x504000000910] } }"; style = filled; fillcolor = "#FFE0E0"];
+node0x5040000002d0 -> node0x5040000008d0
+;node0x5040000002d0 -> node0x504000000910
+;node0x5040000008d0 [shape=Mrecord; label = " { ADDR = [0x5040000008d0] | data [0x502000000010] = Saveliev | shoot_free = 1 | parent = [0x5040000002d0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFE0E0"];
+node0x504000000910 [shape=Mrecord; label = " { ADDR = [0x504000000910] | data [0x51a0000001ef] = unknown person | shoot_free = 0 | parent = [0x5040000002d0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x504000000310 [shape=Mrecord; label = " { ADDR = [0x504000000310] | data [0x51a00000024e] = football player | shoot_free = 0 | parent = [0x504000000010] | { left = [0x504000000350] | right = [0x504000000690] } }"; style = filled; fillcolor = "#FFFFD0"];
 node0x504000000310 -> node0x504000000350
 ;node0x504000000310 -> node0x504000000690
