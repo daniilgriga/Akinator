@@ -108,7 +108,7 @@ int increasing_capacity (struct stack_t* stack ON_DBG(, const char* file, int li
 
 stack_elem_t stack_look (struct stack_t* stack, int n);
 
-void printf_place_info (ON_DBG(const char* file, int line, const char* func, const char* string));
+void printf_place_info (const char* file, int line, const char* func, const char* string);
 
 hash_t hash_djb2(const char* str, size_t size_of_stack);
 

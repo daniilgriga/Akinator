@@ -22,7 +22,7 @@ SOURCES_LIST = main.c log.c stack.c
 SOURCES = $(SOURCES_LIST:%=src/%)
 OBJECTS = $(SOURCES_LIST:%.c=build/%.o)
 DEPS = $(OBJECTS:%.o=%.d)
-EXECUTABLE = build/test
+EXECUTABLE = test.exe
 
 .PHONY: all clean
 

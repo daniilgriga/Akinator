@@ -2,3 +2,6 @@
 *.d
 *.o
 build/test
+*.dmp
+*.log
+*.exe

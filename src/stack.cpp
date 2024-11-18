@@ -38,7 +38,7 @@ enum StackCondition stack_ctor (struct stack_t* stack, int capacity ON_DBG(, con
 
     int error_code = stack_error (stack);
     if ( error_code )
-        return error_code;
+        return (StackCondition) error_code;
 
     ON_DBG ( STACK_ASSERT(stack, file, line, func); )
 
@@ -125,33 +125,33 @@ int stack_dump (struct stack_t* stack, const char* file, int line, const char* f
 
     if (stack == NULL)
     {
-        printf("stack = "BLUE_TEXT("[%p]")", this is all the information I can give\n\n", stack);
+        printf("stack = " BLUE_TEXT("[%p]") ", this is all the information I can give\n\n", stack);
         return 0;
     }
-    ON_HASH      ( printf(  "hash_st = "BLUE_TEXT("%x")"\n", (unsigned int)stack->hash_st);
-                   printf(  "hash_b  = "BLUE_TEXT("%x")"\n", (unsigned int)stack->hash_b ); )
-    ON_CNR_PRTCT ( printf("\ncanary_1 in stack   = "BLUE_TEXT("0x%x")"\n\n" , (unsigned int)stack->canary_stack_1); )
-                   printf(  "stack->capacity     = "BLUE_TEXT("%d")"\n",      stack->capacity);
-                   printf(  "stack->size         = "BLUE_TEXT("%d")"\n",      stack->size);
-                   printf(  "stack->data address = "BLUE_TEXT("[%p]")"\n\n",  stack->data);
-    ON_CNR_PRTCT ( printf(  "canary_2 in stack   = "BLUE_TEXT("0x%x")"\n\n" , (unsigned int)stack->canary_stack_2); )
+    ON_HASH      ( printf(  "hash_st = " BLUE_TEXT("%x") "\n", (unsigned int)stack->hash_st);
+                   printf(  "hash_b  = " BLUE_TEXT("%x") "\n", (unsigned int)stack->hash_b ); )
+    ON_CNR_PRTCT ( printf("\ncanary_1 in stack   = " BLUE_TEXT("0x%x") "\n\n" , (unsigned int)stack->canary_stack_1); )
+                   printf(  "stack->capacity     = " BLUE_TEXT("%d") "\n",      stack->capacity);
+                   printf(  "stack->size         = " BLUE_TEXT("%d") "\n",      stack->size);
+                   printf(  "stack->data address = " BLUE_TEXT("[%p]") "\n\n",  stack->data);
+    ON_CNR_PRTCT ( printf(  "canary_2 in stack   = " BLUE_TEXT("0x%x") "\n\n" , (unsigned int)stack->canary_stack_2); )
 
     if (stack->data == NULL)
     {
-        printf("stack->data = "BLUE_TEXT("[%p]")", this is all the information I can give", stack->data);
+        printf("stack->data = " BLUE_TEXT("[%p]") ", this is all the information I can give", stack->data);
         return 0;
     }
 
     for (int i = 0; i < stack->capacity; i++)
     {
         if (memcmp(&stack->data[i], &STACK_POISON_ELEM, sizeof(STACK_POISON_ELEM)) == 0)
-            printf("stack->data[%d] = "BLUE_TEXT("%p (POISON)")"\n", i, stack->data[i]);
+            printf("stack->data[%d] = " BLUE_TEXT("%p (POISON)") "\n", i, stack->data[i]);
         else
-            printf("stack->data[%d] = "BLUE_TEXT("%p")"\n", i, stack->data[i]);
+            printf("stack->data[%d] = " BLUE_TEXT("%p") "\n", i, stack->data[i]);
     }
 
-    ON_CNR_PRTCT ( printf("\ncanary_3 in buffer = "BLUE_TEXT("0x%x")"\n\n", (unsigned int)stack->data[-1]);
-                   printf("canary_4 in buffer = "BLUE_TEXT("0x%x")"\n\n", (unsigned int)stack->data[stack->capacity]); )
+    ON_CNR_PRTCT ( printf("\ncanary_3 in buffer = " BLUE_TEXT("0x%x") "\n\n", (unsigned int)stack->data[-1]);
+                   printf("canary_4 in buffer = "   BLUE_TEXT("0x%x") "\n\n", (unsigned int)stack->data[stack->capacity]); )
 
     return 0;
 }

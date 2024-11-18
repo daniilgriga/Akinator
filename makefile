@@ -34,7 +34,6 @@ all: $(EXECUTABLE)
 test:
 	cd ../build/test
 
-
 $(EXECUTABLE): $(OBJECTS)
 	@$(CC) $(LDFLAGS) $^ -o $@
 
