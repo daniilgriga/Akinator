@@ -9,7 +9,7 @@ struct Node_t
     struct Node_t* right;
     struct Node_t* parent;
 
-    int shoot_free;
+    int should_free;
 };
 
 struct Buffer_t

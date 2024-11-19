@@ -108,10 +108,10 @@ int main (void)
                printf ("\ninorder: ");
                print_tree_inorder   (root);
                printf ("\n");                           )
-    
+
     int loop = 1;
     while (!txGetAsyncKeyState (VK_ESCAPE) && loop == 1)
-    {	
+    {
         int answer_for_mode = SelectMode ();
 
         switch (answer_for_mode)
@@ -133,7 +133,7 @@ int main (void)
                 create_comparison (root);
                 break;
             }
-                            
+
             case Q_N_Write:
             {
                 write_database (root);
@@ -187,7 +187,7 @@ size_t my_getline (char** lineptr, size_t* /* n */, FILE* stream)
 
     return strlen (*lineptr);
 }
-                                                  
+
 struct Node_t* read_database (FILE* file, struct Buffer_t* buffer)
 {
     assert (file   &&  "FILE* is NULL\n");
@@ -314,7 +314,7 @@ struct Node_t* new_node (char* data, struct Node_t* parent)
     node->left  = NULL;
     node->right = NULL;
 
-    node->shoot_free = 0;
+    node->should_free = 0;
 
     node->parent = parent;
 
@@ -367,11 +367,11 @@ struct Node_t* add_info (struct Node_t* node)
     char* new_object  = get_and_prepare_string (LIGHT_BLUE_TEXT("who tf is this?")"\n");
 
     ptr_left->data = new_object;
-    ptr_left->shoot_free = 1;
+    ptr_left->should_free = 1;
     ptr_right->data = node->data;
 
-    if (node->shoot_free == 1)
-        ptr_right->shoot_free = 1;
+    if (node->should_free == 1)
+        ptr_right->should_free = 1;
 
     char* diff_object = get_and_prepare_string (LIGHT_BLUE_TEXT("whats the difference between ")
                                                 GREEN_TEXT("%s")LIGHT_BLUE_TEXT(" and ")GREEN_TEXT("%s.")
@@ -379,7 +379,7 @@ struct Node_t* add_info (struct Node_t* node)
                                                 ptr_left->data, node->data, ptr_left->data);
 
     node->data = diff_object;
-    node->shoot_free = 1;
+    node->should_free = 1;
 
     dump_in_log_file (node, "adding a node");
 
@@ -395,7 +395,7 @@ struct Node_t* akinator_game (struct Node_t* node)
 {
 
     while (node && node->left && node->right)
-    {        
+    {
       	int answer = SelectYesNo (node->data);
 
         if      (answer == 'y') node = node->left;
@@ -416,7 +416,7 @@ struct Node_t* akinator_game (struct Node_t* node)
     add_info (node);
 
     return node;
-} 
+}
 
 struct Node_t* iterativly_insert (struct Node_t* node, char* data)
 {
@@ -451,10 +451,10 @@ int delete_sub_tree (struct Node_t* node)
 
     if (node->right) delete_sub_tree (node->right);
 
-    if (node->shoot_free == 1)
+    if (node->should_free == 1)
         free (node->data);
 
-    node->shoot_free = 0;
+    node->should_free = 0;
 
     free (node);
 
@@ -577,13 +577,13 @@ void print_tree_preorder_for_file (struct Node_t* root, FILE* filename, int deta
     if (!root)
         return ; //FIXME
 
-    if (root->shoot_free == 0 && detail == 1)
-        fprintf (filename, "node%p [shape=Mrecord; label = \" { ADDR = [%p] | data [%p] = %3s | shoot_free = %d | parent = [%p] | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFFFD0\"];\n",
-             root, root, root->data, root->data, root->shoot_free, root->parent, root->left, root->right);
-    else if (root->shoot_free == 1 && detail == 1)
-        fprintf (filename, "node%p [shape=Mrecord; label = \" { ADDR = [%p] | data [%p] = %3s | shoot_free = %d | parent = [%p] | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFE0E0\"];\n",
-             root, root, root->data, root->data, root->shoot_free, root->parent, root->left, root->right);
-    else if (root->shoot_free == 0 && detail == 0)
+    if (root->should_free == 0 && detail == 1)
+        fprintf (filename, "node%p [shape=Mrecord; label = \" { ADDR = [%p] | data [%p] = %3s | should_free = %d | parent = [%p] | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFFFD0\"];\n",
+             root, root, root->data, root->data, root->should_free, root->parent, root->left, root->right);
+    else if (root->should_free == 1 && detail == 1)
+        fprintf (filename, "node%p [shape=Mrecord; label = \" { ADDR = [%p] | data [%p] = %3s | should_free = %d | parent = [%p] | { left = [%p] | right = [%p] } }\"; style = filled; fillcolor = \"#FFE0E0\"];\n",
+             root, root, root->data, root->data, root->should_free, root->parent, root->left, root->right);
+    else if (root->should_free == 0 && detail == 0)
         fprintf (filename, "node%p [shape=Mrecord; label = \" { %3s } \"; style = filled; fillcolor = \"#FFFFD0\"];\n",
              root, root->data);
     else
