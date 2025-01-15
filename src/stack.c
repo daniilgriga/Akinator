@@ -38,7 +38,7 @@ enum StackCondition stack_ctor (struct stack_t* stack, int capacity ON_DBG(, con
 
     int error_code = stack_error (stack);
     if ( error_code )
-        return (StackCondition) error_code;
+        return (enum StackCondition) error_code;
 
     ON_DBG ( STACK_ASSERT(stack, file, line, func); )
 

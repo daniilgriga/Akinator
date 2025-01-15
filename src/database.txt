@@ -43,9 +43,9 @@
             { "lives in 209 room" 
                 { "loves kefir" 
                     { "damir" } 
-                    { "has glasses" 
-                        { "yura" } 
+                    { "palyboi carti fan" 
                         { "dima" } 
+                        { "yura" } 
                     } 
                 } 
                 { "FUPM REF" } 

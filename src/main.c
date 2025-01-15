@@ -1,8 +1,5 @@
-// #define DEBUG_AKINATOR
 
-#define TX_COMPILED
-#include "TXLib.h"
-#pragma GCC diagnostic ignored "-Wredundant-tags"
+// #define DEBUG_AKINATOR
 
 #include <stdio.h>
 #include <assert.h>
@@ -12,7 +9,6 @@
 #include <sys/stat.h>
 #include <stdarg.h>
 
-#include "graphics.h"
 #include "head.h"
 #include "log.h"
 #include "color_print.h"
@@ -25,9 +21,7 @@
 #endif
 
 #define MaxSize 25
-const int Details     =  1;
-const int Question_id = 10;
-
+const int Details = 1;
 
 struct Node_t* new_node  (char* data, struct Node_t* parent);
 
@@ -81,11 +75,7 @@ size_t my_getline (char** lineptr, size_t* n, FILE* stream);
 
 int main (void)
 {
-    InitGraphics();
-
     FILE* database = fopen ("database.txt", "rb");
-    if (!database) return perror ("Error: File 'database.txt' NOT opened"), 1;
-
     struct Buffer_t buffer = {};
 
     struct Node_t* root = read_database (database, &buffer);
@@ -110,40 +100,44 @@ int main (void)
                printf ("\n");                           )
 
     int loop = 1;
-    while (!txGetAsyncKeyState (VK_ESCAPE) && loop == 1)
+    while (loop)
     {
-        int answer_for_mode = SelectMode ();
+        printf (LIGHT_BLUE_TEXT("\nwhat do you wanna doing?\n"));
+        printf (PURPLE_TEXT("[a]")LIGHT_BLUE_TEXT("kinator game, ")PURPLE_TEXT("[d]")LIGHT_BLUE_TEXT("efinition, ")
+                PURPLE_TEXT("[c]")LIGHT_BLUE_TEXT("omparison, ")
+                PURPLE_TEXT("[q]")LIGHT_BLUE_TEXT("uit and write to database, ")PURPLE_TEXT("[Q]")LIGHT_BLUE_TEXT("uit\n"));
+
+        int answer_for_mode = getchar();
+        clean_buffer ();
 
         switch (answer_for_mode)
         {
-            case AkinatorGame:
+            case 'a':
             {
                 akinator_game (root);
                 break;
             }
 
-            case Definition:
+            case 'd':
             {
                 create_definition (root);
                 break;
             }
 
-            case Comparison:
-	    {
+            case 'c':
                 create_comparison (root);
                 break;
-            }
 
-            case Q_N_Write:
+            case 'q':
             {
                 write_database (root);
-		loop = 0;
+                loop = 0;
                 break;
             }
 
-            case Quit:
+            case 'Q':
             {
-		loop = 0;
+                loop = 0;
                 break;
             }
 
@@ -181,8 +175,6 @@ size_t my_getline (char** lineptr, size_t* /* n */, FILE* stream)
 
     fgets (buffer, MaxSize, stream);
 
-    // \n
-
     *lineptr = strdup (buffer);
 
     return strlen (*lineptr);
@@ -190,7 +182,7 @@ size_t my_getline (char** lineptr, size_t* /* n */, FILE* stream)
 
 struct Node_t* read_database (FILE* file, struct Buffer_t* buffer)
 {
-    assert (file   &&  "FILE* is NULL\n");
+    assert (file   && "FILE* is NULL\n");
     assert (buffer && "buffer is NULL\n");
 
     struct stat st = {};
@@ -198,6 +190,8 @@ struct Node_t* read_database (FILE* file, struct Buffer_t* buffer)
     long file_size = st.st_size;
 
     buffer->buffer_ptr = (char*) calloc ( (size_t) file_size + 1, sizeof(buffer->buffer_ptr[0]));
+    if (buffer->buffer_ptr == NULL)
+        fprintf (stderr, "buffer->buffer_ptr is NULL");
 
     ON_DEBUG ( printf ("\n\n\n\nbuffer->buffer_ptr = [%p]\n\n\n\n", buffer->buffer_ptr); )
 
@@ -358,8 +352,8 @@ struct Node_t* add_info (struct Node_t* node)
 {
     assert (node && "node is NULL in add_info()\n");
 
-    struct Node_t* ptr_left  = new_node (NULL, node); //FIXME - check NULL pointers
-    struct Node_t* ptr_right = new_node (NULL, node);
+    struct Node_t* ptr_left  = new_node ("0", node); //FIXME - check NULL pointers
+    struct Node_t* ptr_right = new_node ("0", node);
 
     node->left  = ptr_left;
     node->right = ptr_right;
@@ -393,19 +387,25 @@ void clean_buffer(void)
 
 struct Node_t* akinator_game (struct Node_t* node)
 {
+    assert (node && "node is NULL in akinator_game()\n");
 
     while (node && node->left && node->right)
     {
-      	int answer = SelectYesNo (node->data);
+        printf (LIGHT_BLUE_TEXT("\"%s\"?")"\n", node->data);
+        printf (PURPLE_TEXT("[y/n]")"\n");
+
+        int answer = getchar();
+        clean_buffer ();       //TODO - func = getchar + clean_buffer
 
         if      (answer == 'y') node = node->left;
         else if (answer == 'n') node = node->right;
         else printf (RED_TEXT("it isn't 'y' or 'n' --- error.")"\n");
     }
 
-    printf (LIGHT_BLUE_TEXT("Is it the ")GREEN_TEXT("RIGHT ANSWER: ") "\n");
+    printf (LIGHT_BLUE_TEXT("Is it the ")GREEN_TEXT("RIGHT ANSWER:")LIGHT_BLUE_TEXT(" \"%s\"?\n")PURPLE_TEXT("[y/n]")"\n", node->data);
 
-    int final_answer = SelectYesNo (node->data);
+    int final_answer = getchar();
+    clean_buffer ();
 
     if (final_answer == 'y')
     {
