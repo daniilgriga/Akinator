@@ -46,8 +46,8 @@ int write_log_file (struct Node_t* root, const char* reason)
     static char filename[50] = {};
     char    command_name[100] = {};
 
-    sprintf (filename, "../build/graph_tree%d.svg", dump_number++);
-    sprintf (command_name, "dot ../build/graph_tree.dot -Tsvg -o %s", filename);
+    sprintf (filename, "build/graph_tree%d.svg", dump_number++);
+    sprintf (command_name, "dot build/graph_tree.dot -Tsvg -o %s", filename);
 
     system  (command_name);
 

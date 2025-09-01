@@ -1,55 +1,58 @@
-{ "teacher" 
-    { "teacher of programming" 
-        { "Ded32" } 
-        { "physics seminarist" 
-            { "Lilienberg" } 
-            { "physics lector" 
-                { "Ovchinkin" } 
-                { "maths lector" 
-                    { "Znamenskaya" } 
-                    { "maths seminarist" 
-                        { "Karzhemanov" } 
-                        { "discrete analysises semi" 
-                            { "Saveliev" } 
-                            { "unknown person" } 
-                        } 
-                    } 
-                } 
-            } 
-        } 
-    } 
-    { "football player" 
-        { "plays for the caRTel" 
-            { "defender" 
-                { "left defender" 
-                    { "tolik" } 
-                    { "dan" } 
-                } 
-                { "center forward" 
-                    { "artem" } 
-                    { "middle defender" 
-                        { "maxon" } 
-                        { "goalkeeper" 
-                            { "dmitri" } 
-                            { "gosha" } 
-                        } 
-                    } 
-                } 
-            } 
-            { "loh" } 
-        } 
-        { "coach" 
-            { "valya" } 
-            { "lives in 209 room" 
-                { "loves kefir" 
-                    { "damir" } 
-                    { "palyboi carti fan" 
-                        { "dima" } 
-                        { "yura" } 
-                    } 
-                } 
-                { "FUPM REF" } 
-            } 
-        } 
-    } 
-} 
+{ "teacher"
+    { "teacher of programming"
+        { "Ded32" }
+        { "physics seminarist"
+            { "Lilienberg" }
+            { "physics lector"
+                { "Ovchinkin" }
+                { "maths lector"
+                    { "Znamenskaya" }
+                    { "maths seminarist"
+                        { "Karzhemanov" }
+                        { "discrete analysises semi"
+                            { "Saveliev" }
+                            { "unknown person" }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    { "football player"
+        { "plays for the caRTel"
+            { "defender"
+                { "left defender"
+                    { "tolik" }
+                    { "dan" }
+                }
+                { "center forward"
+                    { "artem" }
+                    { "middle defender"
+                        { "maxon" }
+                        { "goalkeeper"
+                            { "dmitri" }
+                            { "gosha" }
+                        }
+                    }
+                }
+            }
+            { "loh" }
+        }
+        { "coach"
+            { "valya" }
+            { "lives in 209 room"
+                { "loves kefir"
+                    { "damir" }
+                    { "palyboi carti fan"
+                        { "dima" }
+                        { "yura" }
+                    }
+                }
+                { "wifey"
+                    { "Dashkins" }
+                    { "unknown person fr" }
+                }
+            }
+        }
+    }
+}

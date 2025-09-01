@@ -1,78 +1,82 @@
 digraph
 {
 bgcolor="transparent"
-node0x504000000010 [shape=Mrecord; label = " { ADDR = [0x504000000010] | data [0x51b000000083] = teacher | should_free = 0 | parent = [(nil)] | { left = [0x504000000050] | right = [0x504000000390] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000010 -> node0x504000000050
-;node0x504000000010 -> node0x504000000390
-;node0x504000000050 [shape=Mrecord; label = " { ADDR = [0x504000000050] | data [0x51b000000095] = teacher of programming | should_free = 0 | parent = [0x504000000010] | { left = [0x504000000090] | right = [0x5040000000d0] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000050 -> node0x504000000090
-;node0x504000000050 -> node0x5040000000d0
-;node0x504000000090 [shape=Mrecord; label = " { ADDR = [0x504000000090] | data [0x51b0000000ba] = Ded32 | should_free = 0 | parent = [0x504000000050] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000000d0 [shape=Mrecord; label = " { ADDR = [0x5040000000d0] | data [0x51b0000000d0] = physics seminarist | should_free = 0 | parent = [0x504000000050] | { left = [0x504000000110] | right = [0x504000000150] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000000d0 -> node0x504000000110
-;node0x5040000000d0 -> node0x504000000150
-;node0x504000000110 [shape=Mrecord; label = " { ADDR = [0x504000000110] | data [0x51b0000000f5] = Lilienberg | should_free = 0 | parent = [0x5040000000d0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000150 [shape=Mrecord; label = " { ADDR = [0x504000000150] | data [0x51b000000114] = physics lector | should_free = 0 | parent = [0x5040000000d0] | { left = [0x504000000190] | right = [0x5040000001d0] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000150 -> node0x504000000190
-;node0x504000000150 -> node0x5040000001d0
-;node0x504000000190 [shape=Mrecord; label = " { ADDR = [0x504000000190] | data [0x51b000000139] = Ovchinkin | should_free = 0 | parent = [0x504000000150] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000001d0 [shape=Mrecord; label = " { ADDR = [0x5040000001d0] | data [0x51b00000015b] = maths lector | should_free = 0 | parent = [0x504000000150] | { left = [0x504000000210] | right = [0x504000000250] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000001d0 -> node0x504000000210
-;node0x5040000001d0 -> node0x504000000250
-;node0x504000000210 [shape=Mrecord; label = " { ADDR = [0x504000000210] | data [0x51b000000182] = Znamenskaya | should_free = 0 | parent = [0x5040000001d0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000250 [shape=Mrecord; label = " { ADDR = [0x504000000250] | data [0x51b0000001aa] = maths seminarist | should_free = 0 | parent = [0x5040000001d0] | { left = [0x504000000290] | right = [0x5040000002d0] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000250 -> node0x504000000290
-;node0x504000000250 -> node0x5040000002d0
-;node0x504000000290 [shape=Mrecord; label = " { ADDR = [0x504000000290] | data [0x51b0000001d9] = Karzhemanov | should_free = 0 | parent = [0x504000000250] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000002d0 [shape=Mrecord; label = " { ADDR = [0x5040000002d0] | data [0x51b000000205] = discrete analysises semi | should_free = 0 | parent = [0x504000000250] | { left = [0x504000000310] | right = [0x504000000350] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000002d0 -> node0x504000000310
-;node0x5040000002d0 -> node0x504000000350
-;node0x504000000310 [shape=Mrecord; label = " { ADDR = [0x504000000310] | data [0x51b000000240] = Saveliev | should_free = 0 | parent = [0x5040000002d0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000350 [shape=Mrecord; label = " { ADDR = [0x504000000350] | data [0x51b00000026d] = unknown person | should_free = 0 | parent = [0x5040000002d0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000390 [shape=Mrecord; label = " { ADDR = [0x504000000390] | data [0x51b0000002f4] = football player | should_free = 0 | parent = [0x504000000010] | { left = [0x5040000003d0] | right = [0x504000000710] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000390 -> node0x5040000003d0
-;node0x504000000390 -> node0x504000000710
-;node0x5040000003d0 [shape=Mrecord; label = " { ADDR = [0x5040000003d0] | data [0x51b000000312] = plays for the caRTel | should_free = 0 | parent = [0x504000000390] | { left = [0x504000000410] | right = [0x5040000006d0] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000003d0 -> node0x504000000410
-;node0x5040000003d0 -> node0x5040000006d0
-;node0x504000000410 [shape=Mrecord; label = " { ADDR = [0x504000000410] | data [0x51b000000339] = defender | should_free = 0 | parent = [0x5040000003d0] | { left = [0x504000000450] | right = [0x504000000510] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000410 -> node0x504000000450
-;node0x504000000410 -> node0x504000000510
-;node0x504000000450 [shape=Mrecord; label = " { ADDR = [0x504000000450] | data [0x51b000000358] = left defender | should_free = 0 | parent = [0x504000000410] | { left = [0x504000000490] | right = [0x5040000004d0] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000450 -> node0x504000000490
-;node0x504000000450 -> node0x5040000004d0
-;node0x504000000490 [shape=Mrecord; label = " { ADDR = [0x504000000490] | data [0x51b000000380] = tolik | should_free = 0 | parent = [0x504000000450] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000004d0 [shape=Mrecord; label = " { ADDR = [0x5040000004d0] | data [0x51b0000003a2] = dan | should_free = 0 | parent = [0x504000000450] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000510 [shape=Mrecord; label = " { ADDR = [0x504000000510] | data [0x51b0000003d2] = center forward | should_free = 0 | parent = [0x504000000410] | { left = [0x504000000550] | right = [0x504000000590] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000510 -> node0x504000000550
-;node0x504000000510 -> node0x504000000590
-;node0x504000000550 [shape=Mrecord; label = " { ADDR = [0x504000000550] | data [0x51b0000003fb] = artem | should_free = 0 | parent = [0x504000000510] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000590 [shape=Mrecord; label = " { ADDR = [0x504000000590] | data [0x51b00000041d] = middle defender | should_free = 0 | parent = [0x504000000510] | { left = [0x5040000005d0] | right = [0x504000000610] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000590 -> node0x5040000005d0
-;node0x504000000590 -> node0x504000000610
-;node0x5040000005d0 [shape=Mrecord; label = " { ADDR = [0x5040000005d0] | data [0x51b00000044b] = maxon | should_free = 0 | parent = [0x504000000590] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000610 [shape=Mrecord; label = " { ADDR = [0x504000000610] | data [0x51b000000471] = goalkeeper | should_free = 0 | parent = [0x504000000590] | { left = [0x504000000650] | right = [0x504000000690] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000610 -> node0x504000000650
-;node0x504000000610 -> node0x504000000690
-;node0x504000000650 [shape=Mrecord; label = " { ADDR = [0x504000000650] | data [0x51b00000049e] = dmitri | should_free = 0 | parent = [0x504000000610] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000690 [shape=Mrecord; label = " { ADDR = [0x504000000690] | data [0x51b0000004c9] = gosha | should_free = 0 | parent = [0x504000000610] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000006d0 [shape=Mrecord; label = " { ADDR = [0x5040000006d0] | data [0x51b00000053b] = loh | should_free = 0 | parent = [0x5040000003d0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000710 [shape=Mrecord; label = " { ADDR = [0x504000000710] | data [0x51b00000055b] = coach | should_free = 0 | parent = [0x504000000390] | { left = [0x504000000750] | right = [0x504000000790] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000710 -> node0x504000000750
-;node0x504000000710 -> node0x504000000790
-;node0x504000000750 [shape=Mrecord; label = " { ADDR = [0x504000000750] | data [0x51b000000573] = valya | should_free = 0 | parent = [0x504000000710] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000790 [shape=Mrecord; label = " { ADDR = [0x504000000790] | data [0x51b00000058d] = lives in 209 room | should_free = 0 | parent = [0x504000000710] | { left = [0x5040000007d0] | right = [0x504000000910] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000790 -> node0x5040000007d0
-;node0x504000000790 -> node0x504000000910
-;node0x5040000007d0 [shape=Mrecord; label = " { ADDR = [0x5040000007d0] | data [0x51b0000005b5] = loves kefir | should_free = 0 | parent = [0x504000000790] | { left = [0x504000000810] | right = [0x504000000850] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000007d0 -> node0x504000000810
-;node0x5040000007d0 -> node0x504000000850
-;node0x504000000810 [shape=Mrecord; label = " { ADDR = [0x504000000810] | data [0x51b0000005db] = damir | should_free = 0 | parent = [0x5040000007d0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000850 [shape=Mrecord; label = " { ADDR = [0x504000000850] | data [0x51b0000005fd] = palyboi carti fan | should_free = 0 | parent = [0x5040000007d0] | { left = [0x504000000890] | right = [0x5040000008d0] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000850 -> node0x504000000890
-;node0x504000000850 -> node0x5040000008d0
-;node0x504000000890 [shape=Mrecord; label = " { ADDR = [0x504000000890] | data [0x51b00000062d] = dima | should_free = 0 | parent = [0x504000000850] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x5040000008d0 [shape=Mrecord; label = " { ADDR = [0x5040000008d0] | data [0x51b000000652] = yura | should_free = 0 | parent = [0x504000000850] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
-node0x504000000910 [shape=Mrecord; label = " { ADDR = [0x504000000910] | data [0x51b00000069b] = FUPM REF | should_free = 0 | parent = [0x504000000790] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727b40 [shape=Mrecord; label = " { ADDR = [0x55ea50727b40] | data [0x55ea507274f3] = teacher | should_free = 0 | parent = [(nil)] | { left = [0x55ea50727b70] | right = [0x55ea50727de0] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727b40 -> node0x55ea50727b70
+;node0x55ea50727b40 -> node0x55ea50727de0
+;node0x55ea50727b70 [shape=Mrecord; label = " { ADDR = [0x55ea50727b70] | data [0x55ea50727503] = teacher of programming | should_free = 0 | parent = [0x55ea50727b40] | { left = [0x55ea50727ba0] | right = [0x55ea50727bd0] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727b70 -> node0x55ea50727ba0
+;node0x55ea50727b70 -> node0x55ea50727bd0
+;node0x55ea50727ba0 [shape=Mrecord; label = " { ADDR = [0x55ea50727ba0] | data [0x55ea50727526] = Ded32 | should_free = 0 | parent = [0x55ea50727b70] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727bd0 [shape=Mrecord; label = " { ADDR = [0x55ea50727bd0] | data [0x55ea5072753a] = physics seminarist | should_free = 0 | parent = [0x55ea50727b70] | { left = [0x55ea50727c00] | right = [0x55ea50727c30] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727bd0 -> node0x55ea50727c00
+;node0x55ea50727bd0 -> node0x55ea50727c30
+;node0x55ea50727c00 [shape=Mrecord; label = " { ADDR = [0x55ea50727c00] | data [0x55ea5072755d] = Lilienberg | should_free = 0 | parent = [0x55ea50727bd0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727c30 [shape=Mrecord; label = " { ADDR = [0x55ea50727c30] | data [0x55ea5072757a] = physics lector | should_free = 0 | parent = [0x55ea50727bd0] | { left = [0x55ea50727c60] | right = [0x55ea50727c90] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727c30 -> node0x55ea50727c60
+;node0x55ea50727c30 -> node0x55ea50727c90
+;node0x55ea50727c60 [shape=Mrecord; label = " { ADDR = [0x55ea50727c60] | data [0x55ea5072759d] = Ovchinkin | should_free = 0 | parent = [0x55ea50727c30] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727c90 [shape=Mrecord; label = " { ADDR = [0x55ea50727c90] | data [0x55ea507275bd] = maths lector | should_free = 0 | parent = [0x55ea50727c30] | { left = [0x55ea50727cc0] | right = [0x55ea50727cf0] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727c90 -> node0x55ea50727cc0
+;node0x55ea50727c90 -> node0x55ea50727cf0
+;node0x55ea50727cc0 [shape=Mrecord; label = " { ADDR = [0x55ea50727cc0] | data [0x55ea507275e2] = Znamenskaya | should_free = 0 | parent = [0x55ea50727c90] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727cf0 [shape=Mrecord; label = " { ADDR = [0x55ea50727cf0] | data [0x55ea50727608] = maths seminarist | should_free = 0 | parent = [0x55ea50727c90] | { left = [0x55ea50727d20] | right = [0x55ea50727d50] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727cf0 -> node0x55ea50727d20
+;node0x55ea50727cf0 -> node0x55ea50727d50
+;node0x55ea50727d20 [shape=Mrecord; label = " { ADDR = [0x55ea50727d20] | data [0x55ea50727635] = Karzhemanov | should_free = 0 | parent = [0x55ea50727cf0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727d50 [shape=Mrecord; label = " { ADDR = [0x55ea50727d50] | data [0x55ea5072765f] = discrete analysises semi | should_free = 0 | parent = [0x55ea50727cf0] | { left = [0x55ea50727d80] | right = [0x55ea50727db0] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727d50 -> node0x55ea50727d80
+;node0x55ea50727d50 -> node0x55ea50727db0
+;node0x55ea50727d80 [shape=Mrecord; label = " { ADDR = [0x55ea50727d80] | data [0x55ea50727698] = Saveliev | should_free = 0 | parent = [0x55ea50727d50] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727db0 [shape=Mrecord; label = " { ADDR = [0x55ea50727db0] | data [0x55ea507276c3] = unknown person | should_free = 0 | parent = [0x55ea50727d50] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727de0 [shape=Mrecord; label = " { ADDR = [0x55ea50727de0] | data [0x55ea5072773c] = football player | should_free = 0 | parent = [0x55ea50727b40] | { left = [0x55ea50727e10] | right = [0x55ea50728080] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727de0 -> node0x55ea50727e10
+;node0x55ea50727de0 -> node0x55ea50728080
+;node0x55ea50727e10 [shape=Mrecord; label = " { ADDR = [0x55ea50727e10] | data [0x55ea50727758] = plays for the caRTel | should_free = 0 | parent = [0x55ea50727de0] | { left = [0x55ea50727e40] | right = [0x55ea50728050] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727e10 -> node0x55ea50727e40
+;node0x55ea50727e10 -> node0x55ea50728050
+;node0x55ea50727e40 [shape=Mrecord; label = " { ADDR = [0x55ea50727e40] | data [0x55ea5072777d] = defender | should_free = 0 | parent = [0x55ea50727e10] | { left = [0x55ea50727e70] | right = [0x55ea50727f00] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727e40 -> node0x55ea50727e70
+;node0x55ea50727e40 -> node0x55ea50727f00
+;node0x55ea50727e70 [shape=Mrecord; label = " { ADDR = [0x55ea50727e70] | data [0x55ea5072779a] = left defender | should_free = 0 | parent = [0x55ea50727e40] | { left = [0x55ea50727ea0] | right = [0x55ea50727ed0] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727e70 -> node0x55ea50727ea0
+;node0x55ea50727e70 -> node0x55ea50727ed0
+;node0x55ea50727ea0 [shape=Mrecord; label = " { ADDR = [0x55ea50727ea0] | data [0x55ea507277c0] = tolik | should_free = 0 | parent = [0x55ea50727e70] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727ed0 [shape=Mrecord; label = " { ADDR = [0x55ea50727ed0] | data [0x55ea507277e0] = dan | should_free = 0 | parent = [0x55ea50727e70] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727f00 [shape=Mrecord; label = " { ADDR = [0x55ea50727f00] | data [0x55ea5072780c] = center forward | should_free = 0 | parent = [0x55ea50727e40] | { left = [0x55ea50727f30] | right = [0x55ea50727f60] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727f00 -> node0x55ea50727f30
+;node0x55ea50727f00 -> node0x55ea50727f60
+;node0x55ea50727f30 [shape=Mrecord; label = " { ADDR = [0x55ea50727f30] | data [0x55ea50727833] = artem | should_free = 0 | parent = [0x55ea50727f00] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727f60 [shape=Mrecord; label = " { ADDR = [0x55ea50727f60] | data [0x55ea50727853] = middle defender | should_free = 0 | parent = [0x55ea50727f00] | { left = [0x55ea50727f90] | right = [0x55ea50727fc0] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727f60 -> node0x55ea50727f90
+;node0x55ea50727f60 -> node0x55ea50727fc0
+;node0x55ea50727f90 [shape=Mrecord; label = " { ADDR = [0x55ea50727f90] | data [0x55ea5072787f] = maxon | should_free = 0 | parent = [0x55ea50727f60] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727fc0 [shape=Mrecord; label = " { ADDR = [0x55ea50727fc0] | data [0x55ea507278a3] = goalkeeper | should_free = 0 | parent = [0x55ea50727f60] | { left = [0x55ea50727ff0] | right = [0x55ea50728020] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50727fc0 -> node0x55ea50727ff0
+;node0x55ea50727fc0 -> node0x55ea50728020
+;node0x55ea50727ff0 [shape=Mrecord; label = " { ADDR = [0x55ea50727ff0] | data [0x55ea507278ce] = dmitri | should_free = 0 | parent = [0x55ea50727fc0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50728020 [shape=Mrecord; label = " { ADDR = [0x55ea50728020] | data [0x55ea507278f7] = gosha | should_free = 0 | parent = [0x55ea50727fc0] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50728050 [shape=Mrecord; label = " { ADDR = [0x55ea50728050] | data [0x55ea5072795f] = loh | should_free = 0 | parent = [0x55ea50727e10] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50728080 [shape=Mrecord; label = " { ADDR = [0x55ea50728080] | data [0x55ea5072797b] = coach | should_free = 0 | parent = [0x55ea50727de0] | { left = [0x55ea507280b0] | right = [0x55ea507280e0] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50728080 -> node0x55ea507280b0
+;node0x55ea50728080 -> node0x55ea507280e0
+;node0x55ea507280b0 [shape=Mrecord; label = " { ADDR = [0x55ea507280b0] | data [0x55ea50727991] = valya | should_free = 0 | parent = [0x55ea50728080] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea507280e0 [shape=Mrecord; label = " { ADDR = [0x55ea507280e0] | data [0x55ea507279a9] = lives in 209 room | should_free = 0 | parent = [0x55ea50728080] | { left = [0x55ea50728110] | right = [0x55ea50728200] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea507280e0 -> node0x55ea50728110
+;node0x55ea507280e0 -> node0x55ea50728200
+;node0x55ea50728110 [shape=Mrecord; label = " { ADDR = [0x55ea50728110] | data [0x55ea507279cf] = loves kefir | should_free = 0 | parent = [0x55ea507280e0] | { left = [0x55ea50728140] | right = [0x55ea50728170] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50728110 -> node0x55ea50728140
+;node0x55ea50728110 -> node0x55ea50728170
+;node0x55ea50728140 [shape=Mrecord; label = " { ADDR = [0x55ea50728140] | data [0x55ea507279f3] = damir | should_free = 0 | parent = [0x55ea50728110] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50728170 [shape=Mrecord; label = " { ADDR = [0x55ea50728170] | data [0x55ea50727a13] = palyboi carti fan | should_free = 0 | parent = [0x55ea50728110] | { left = [0x55ea507281a0] | right = [0x55ea507281d0] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50728170 -> node0x55ea507281a0
+;node0x55ea50728170 -> node0x55ea507281d0
+;node0x55ea507281a0 [shape=Mrecord; label = " { ADDR = [0x55ea507281a0] | data [0x55ea50727a41] = dima | should_free = 0 | parent = [0x55ea50728170] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea507281d0 [shape=Mrecord; label = " { ADDR = [0x55ea507281d0] | data [0x55ea50727a64] = yura | should_free = 0 | parent = [0x55ea50728170] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50728200 [shape=Mrecord; label = " { ADDR = [0x55ea50728200] | data [0x55ea50727aa7] = wifey | should_free = 0 | parent = [0x55ea507280e0] | { left = [0x55ea50728230] | right = [0x55ea50728260] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50728200 -> node0x55ea50728230
+;node0x55ea50728200 -> node0x55ea50728260
+;node0x55ea50728230 [shape=Mrecord; label = " { ADDR = [0x55ea50728230] | data [0x55ea50727ac5] = Dashkins | should_free = 0 | parent = [0x55ea50728200] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
+node0x55ea50728260 [shape=Mrecord; label = " { ADDR = [0x55ea50728260] | data [0x55ea50727ae8] = unknown person fr | should_free = 0 | parent = [0x55ea50728200] | { left = [(nil)] | right = [(nil)] } }"; style = filled; fillcolor = "#FFFFD0"];
 
 }

@@ -75,7 +75,7 @@ size_t my_getline (char** lineptr, size_t* n, FILE* stream);
 
 int main (void)
 {
-    FILE* database = fopen ("database.txt", "rb");
+    FILE* database = fopen ("src/database.txt", "rb");
     struct Buffer_t buffer = {};
 
     struct Node_t* root = read_database (database, &buffer);
@@ -85,7 +85,7 @@ int main (void)
     ON_DEBUG ( printf ("GNU = %d.%d\n", __GNUC__, __GNUC_MINOR__);
                printf ("%ld", _POSIX_C_SOURCE);                    )
 
-    open_log_file ("../build/dump.html");
+    open_log_file ("build/dump.html");
 
     dump_in_log_file (root, "before insert");
 
@@ -548,7 +548,7 @@ int make_graph (struct Node_t* root)
 {
     assert (root);
 
-    FILE* graph_file = fopen ("../build/graph_tree.dot", "w");
+    FILE* graph_file = fopen ("build/graph_tree.dot", "w");
     if (graph_file == NULL)
     {
         printf("ERROR open graph_file\n");
