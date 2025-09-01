@@ -1,5 +1,5 @@
 
-// #define DEBUG_AKINATOR
+#define DEBUG_AKINATOR
 
 #include <stdio.h>
 #include <assert.h>
